@@ -1,7 +1,8 @@
 import { routeAgentRequest } from "agents";
 import type { Env } from "./env";
 import { handleHealth } from "./routes/health";
-import { handleScout } from "./routes/scout";
+import { getRegistry } from "./registry";
+import { handleOrgs, handleScout } from "./routes/scout";
 
 export { IssueScoutAgent } from "./agent";
 
@@ -23,6 +24,7 @@ export default {
     const url = new URL(request.url);
 
     if (url.pathname === "/health" && request.method === "GET") return handleHealth(env);
+    if (url.pathname === "/orgs") return handleOrgs(request, { registry: getRegistry() });
     if (url.pathname === "/scout") return handleScout(request, env);
 
     if (url.pathname.startsWith("/agents/")) {

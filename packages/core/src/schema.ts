@@ -57,6 +57,8 @@ export type Explanation = z.infer<typeof ExplanationSchema>;
 
 export const PreferencesSchema = z.object({
   languages: z.array(z.string()).optional(),
+  /** Org logins to include; absent means all enabled orgs. A hard filter applied before ranking. */
+  orgs: z.array(z.string()).optional(),
   timeBudgetHours: z.number().positive().optional(),
   wantsTests: z.boolean().optional(),
   excludeRepos: z.array(z.string()),

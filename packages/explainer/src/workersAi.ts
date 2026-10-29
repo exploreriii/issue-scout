@@ -51,7 +51,7 @@ export async function explain(
   ];
   const input = (msgs: Message[]) => ({
     messages: msgs,
-    max_tokens: deps.maxTokens ?? 900,
+    max_tokens: deps.maxTokens ?? 1600,
     temperature: 0.2,
     response_format: { type: "json_schema", json_schema: explanationJsonSchema },
   });
@@ -60,9 +60,13 @@ export async function explain(
     try {
       const res = await deps.ai.run(deps.model, input(msgs));
       const parsed = ExplanationArray.safeParse(extractPayload(res));
+      if (!parsed.success) console.warn(`explainer: response did not match schema (${parsed.error.issues.length} issues)`);
       return parsed.success ? parsed.data : null;
-    } catch {
-      return null; // model/parse errors never throw out of explain()
+    } catch (e) {
+      // Never throws out of explain(); log the error class and message only (no prompt content).
+      const err = e as { name?: string; message?: string };
+      console.warn(`explainer: model call failed: ${err?.name ?? "Error"}: ${(err?.message ?? "").slice(0, 300)}`);
+      return null;
     }
   };
 

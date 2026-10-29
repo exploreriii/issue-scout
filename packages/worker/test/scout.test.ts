@@ -1,7 +1,7 @@
 import { env } from "cloudflare:test";
 import { RATE_LIMIT_PER_HOUR } from "@issue-scout/sources";
 import { beforeEach, describe, expect, it } from "vitest";
-import { handleScout } from "../src/routes/scout";
+import { handleOrgs, handleScout } from "../src/routes/scout";
 import { clearKv, makeDeps } from "./helpers";
 
 beforeEach(clearKv);
@@ -90,5 +90,54 @@ describe("POST /scout", () => {
     const keys = (await env.CACHE.list()).keys.map((k) => k.name);
     expect(keys.some((k) => k.includes("203.0.113.77"))).toBe(false);
     expect(keys.some((k) => k.startsWith("rl:"))).toBe(true);
+  });
+});
+
+describe("GET /orgs", () => {
+  it("lists the enabled registry as login and displayName", async () => {
+    const t = makeDeps();
+    const res = handleOrgs(new Request("https://example.com/orgs"), t.deps);
+    expect(res.status).toBe(200);
+    expect(await res.json()).toEqual([
+      { login: "hiero-ledger", displayName: "Hiero Ledger" },
+      { login: "hiero-hackers", displayName: "Hiero Hackers" },
+      { login: "LFDT-CLPR", displayName: "LFDT CLPR" },
+    ]);
+    expect(handleOrgs(new Request("https://example.com/orgs", { method: "POST" }), t.deps).status).toBe(405);
+  });
+});
+
+describe("POST /scout with orgs (FR-16)", () => {
+  it("answers 400 for an unknown org and for a malformed orgs field, before any fetch", async () => {
+    const t = makeDeps();
+    const unknown = await handleScout(post({ handle: "exploreriii", orgs: ["hiero-ledger", "nope-org"] }), env, t.deps);
+    expect(unknown.status).toBe(400);
+    expect(((await unknown.json()) as any).error).toContain("nope-org");
+    const bad = await handleScout(post({ handle: "exploreriii", orgs: "hiero-ledger" }), env, t.deps);
+    expect(bad.status).toBe(400);
+    expect(t.fetches).toEqual({ issues: 0, profiles: 0 });
+  });
+
+  it("hard-filters candidates to the chosen orgs and echoes them", async () => {
+    const t = makeDeps();
+    const res = await handleScout(post({ handle: "exploreriii", orgs: ["HIERO-HACKERS"] }), env, t.deps);
+    expect(res.status).toBe(200);
+    const body = (await res.json()) as any;
+    expect(body.orgs).toEqual(["hiero-hackers"]);
+    expect(body.shortlist.length).toBeGreaterThan(0);
+    for (const item of [...body.shortlist, ...body.runnersUp]) expect(item.issue.org).toBe("hiero-hackers");
+  });
+
+  it("returns orgCounts from before the org filter, with 0 for an org with no candidates", async () => {
+    const t = makeDeps();
+    const all = (await (await handleScout(post({ handle: "exploreriii" }), env, t.deps)).json()) as any;
+    expect(all.orgs).toBeUndefined();
+    expect(Object.keys(all.orgCounts).sort()).toEqual(["LFDT-CLPR", "hiero-hackers", "hiero-ledger"]);
+    expect(all.orgCounts["LFDT-CLPR"]).toBe(0);
+    expect(all.orgCounts["hiero-ledger"]).toBeGreaterThan(0);
+    expect(all.orgCounts["hiero-hackers"]).toBeGreaterThan(0);
+
+    const filtered = (await (await handleScout(post({ handle: "exploreriii", orgs: ["hiero-hackers"] }), env, makeDeps().deps)).json()) as any;
+    expect(filtered.orgCounts).toEqual(all.orgCounts);
   });
 });

@@ -4,6 +4,7 @@ import { ToolCall } from "./tools";
 /** The deterministic command grammar. Anything else goes to the single model fallback. */
 export type Command =
   | { cmd: "only"; languages: string[] }
+  | { cmd: "orgs"; orgs: string[] }
   | { cmd: "exclude"; repo: string }
   | { cmd: "whyNot"; url: string }
   | { cmd: "context"; org: string; repo: string }
@@ -36,6 +37,14 @@ export function parseCommand(input: string): Command | null {
   const t = input.trim().replace(/[.!?]+$/, "");
   let m: RegExpExecArray | null;
 
+  if (/^all\s+orgs?$/i.test(t)) return { cmd: "orgs", orgs: [] };
+  if ((m = /^only\s+orgs?\s+([^\n]{1,200})$/i.exec(t))) {
+    const orgs = m[1]!
+      .split(/\s*(?:,|\band\b|\bor\b)\s*/i)
+      .map((o) => o.trim())
+      .filter((o) => /^[A-Za-z0-9._-]{1,100}$/.test(o));
+    return orgs.length > 0 && orgs.length <= 10 ? { cmd: "orgs", orgs } : null;
+  }
   if ((m = /^only\s+([^\n]{1,80})$/i.exec(t))) {
     const languages = m[1]!
       .split(/\s*(?:,|\band\b|\bor\b)\s*/i)
@@ -58,7 +67,7 @@ export function parseCommand(input: string): Command | null {
 const SYSTEM = [
   "You map a user's message to exactly one tool call for a GitHub issue recommender. Reply with one JSON object and nothing else.",
   "Tools:",
-  '{"tool":"refine","languages"?:string[],"timeBudgetHours"?:number,"wantsTests"?:boolean,"excludeRepos"?:string[]}',
+  '{"tool":"refine","languages"?:string[],"orgs"?:string[] (organisation logins; [] means all),"timeBudgetHours"?:number,"wantsTests"?:boolean,"excludeRepos"?:string[]}',
   '{"tool":"whyNot","url":string}',
   '{"tool":"repoContext","org":string,"repo":string}',
   '{"tool":"watch","issue":number,"days":number}  (issue is the 1-based list position, days 1-14)',

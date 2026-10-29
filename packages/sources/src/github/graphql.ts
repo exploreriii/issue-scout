@@ -96,6 +96,12 @@ export class GithubHttp {
     if ((res.status === 403 || res.status === 429) && this.rateLimit.remaining === 0) {
       throw new GithubRateLimitError(this.rateLimit.resetAt);
     }
+    if ((res.status === 401 || res.status === 403) && !this.token) {
+      throw new GithubApiError(
+        "GitHub rejected an unauthenticated request. Set GITHUB_TOKEN (read-only, public repositories) in .dev.vars or as a Worker secret.",
+        res.status,
+      );
+    }
     return res;
   }
 }

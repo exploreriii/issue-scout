@@ -1,0 +1,100 @@
+@import "tailwindcss";
+
+/* Palette: zinc neutrals plus one emerald accent (primary button, focus ring,
+   score bars). Every colour is a variable so dark mode is a single override. */
+:root {
+  color-scheme: light dark;
+  --bg: #fafafa; /* zinc-50 */
+  --surface: #ffffff;
+  --inset: #f4f4f5; /* zinc-100 */
+  --fg: #18181b; /* zinc-900 */
+  --muted: #52525b; /* zinc-600, 7.4:1 on bg */
+  --line: #e4e4e7; /* zinc-200 */
+  --line-strong: #a1a1aa; /* zinc-400, input borders (3:1) */
+  --accent-solid: #047857; /* emerald-700, white text 5.5:1 */
+  --accent-bar: #059669; /* emerald-600 */
+  --accent-ring: #059669;
+  --danger: #b91c1c; /* red-700 */
+  --font-serif: Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif;
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #09090b; /* zinc-950 */
+    --surface: #18181b; /* zinc-900 */
+    --inset: #202024;
+    --fg: #f4f4f5; /* zinc-100 */
+    --muted: #a1a1aa; /* zinc-400, 6.9:1 on surface */
+    --line: #3f3f46; /* zinc-700 */
+    --line-strong: #71717a; /* zinc-500 */
+    --accent-solid: #047857;
+    --accent-bar: #10b981; /* emerald-500 */
+    --accent-ring: #34d399; /* emerald-400 */
+    --danger: #fca5a5; /* red-300 */
+  }
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-inset: var(--inset);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-line: var(--line);
+  --color-line-strong: var(--line-strong);
+  --color-accent: var(--accent-solid);
+  --color-bar: var(--accent-bar);
+  --color-danger: var(--danger);
+  --font-serif: var(--font-serif);
+  --font-sans: var(--font-sans);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--font-sans);
+  line-height: 1.55;
+  overflow-wrap: anywhere;
+}
+
+/* Visible focus ring on every interactive element (NFR-9). */
+:focus-visible {
+  outline: 2px solid var(--accent-ring);
+  outline-offset: 2px;
+}
+
+::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+
+.card:focus-within {
+  border-color: var(--line-strong);
+}
+
+@keyframes skeleton-pulse {
+  50% {
+    opacity: 0.55;
+  }
+}
+
+.skeleton {
+  animation: skeleton-pulse 1.8s ease-in-out infinite;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .skeleton {
+    animation: none;
+  }
+}

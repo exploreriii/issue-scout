@@ -18,6 +18,7 @@ Implementation decisions where the specification was silent.
 | D12 | UI types | Response types are declared in `ui/src/api.ts`, mirroring the core schema, to keep zod out of the bundle. | Accepted; keep in sync |
 | D13 | Platform | `wrangler.jsonc` at the root. `agents ^0.31`, React 19. Worker tests use vitest 4 with `@cloudflare/vitest-pool-workers` and `remoteBindings: false`. | Accepted |
 | D14 | Fixtures | 36 issues recorded (hiero-ledger 26, hiero-hackers 10), 16 assigned. `repoLastMergedPrAt` not recorded. | Accepted |
+| D15 | Explainer: default model | Default changed from `@cf/moonshotai/kimi-k2.6` to `@cf/meta/llama-3.3-70b-instruct-fp8-fast`, also set as `AI_MODEL` in `wrangler.jsonc` vars. kimi-k2.6 fails on the Workers Free plan (AiError 5035); llama-3.3 runs there and honours `json_schema`. Its first outputs were terse, so the prompt now asks for 15-45 word specific sentences with two format examples, and the schema requires 40+ characters per text field and integer `effortHours` 1-40 (failures trigger the retry). `max_tokens` raised 900 to 1600 for the longer fields. Supersedes D10. | Accepted |
 
 ## Open
 | # | Item | Detail |

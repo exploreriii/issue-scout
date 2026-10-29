@@ -2,5 +2,5 @@ export { explain, type AiBinding, type ExplainDeps, type ExplainResult } from ".
 export { buildSystemPrompt, buildUserPrompt, BODY_MAX_CHARS } from "./prompt.js";
 export { ExplanationArray, ExplanationOutSchema, explanationJsonSchema } from "./schema.js";
 export { extractJsonArray } from "./extract.js";
-/** Default model: kimi-k2.6, the structured-output model in the Workers AI catalogue. */
-export const DEFAULT_MODEL = "@cf/moonshotai/kimi-k2.6";
+/** Default model: a Workers Free plan model that honours response_format json_schema. Override with env.AI_MODEL. */
+export const DEFAULT_MODEL = "@cf/meta/llama-3.3-70b-instruct-fp8-fast";

@@ -37,7 +37,7 @@ export function makeAi(): AiStub {
         const ids = [...user.matchAll(/"issueId": "([^"]+)"/g)].map((m) => m[1]);
         return {
           response: JSON.stringify(
-            ids.map((issueId) => ({ issueId, fit: "fits you", firstPrLooksLike: "a small patch", effortHours: 2, firstStep: "read the issue" })),
+            ids.map((issueId) => ({ issueId, fit: "Your recent work matches the language and size of this issue, so it should feel familiar.", firstPrLooksLike: "A small, focused patch that changes one file and adds or adjusts a single test.", effortHours: 2, firstStep: "Read the issue and the contributing guide, then comment that you would like to take it." })),
           ),
         };
       }

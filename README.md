@@ -7,6 +7,24 @@ A read-only good-first-issue matcher for Hiero and LF Decentralized Trust organi
 - **Output:** the top five open issues, each with a score, reasons, a model-written explanation, an effort estimate and a first step. The next five come with a note on why they were not chosen.
 - **Conversation:** refine preferences (languages, time budget, tests, excluded repositories), ask about an issue, see repository context, or watch an issue.
 
+## How to use
+
+1. Enter a GitHub handle, or choose "Describe yourself instead" and type something like "Python and a bit of Rust, two evenings a week". Press **Find issues**.
+
+   ![Landing page](docs/screenshots/01-landing-light.png)
+
+2. Read the shortlist. Each card shows the repository, the issue, its labels, how well it matches and why, and a short explanation of what a first pull request would look like. Organisation buttons above the list switch organisations on and off; the number is how many open candidate issues each one has.
+
+   ![Shortlist](docs/screenshots/02-shortlist-light.png)
+
+   ![One issue card](docs/screenshots/05-card-light.png)
+
+3. Refine in plain words: "only Rust", "nothing bigger than an evening", "exclude hiero-ledger/hiero-website", "why not <issue url>", "watch 2 for 7 days". The list updates without calling GitHub again.
+
+   ![Refined shortlist](docs/screenshots/03-refine-light.png)
+
+The page works on a phone.
+
 ## How it works
 | Component | Role |
 |---|---|

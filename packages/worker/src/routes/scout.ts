@@ -2,11 +2,11 @@ import { RATE_LIMIT_PER_HOUR, checkRateLimit, isValidHandle, type ScoutInput } f
 import { MAX_PROFILE_TEXT_CHARS } from "../limits";
 import { describeError, logFailure } from "../errors";
 import type { Env } from "../env";
-import { createDeps, runScout, type Deps } from "../flow";
+import { createDeps, resolveOrgs, runScout, type Deps } from "../flow";
 
 const MAX_BODY_BYTES = 4096;
 
-export type ParsedBody = { ok: true; input: ScoutInput } | { ok: false; message: string };
+export type ParsedBody = { ok: true; input: ScoutInput; orgs?: string[] } | { ok: false; message: string };
 
 /** FR-1: a handle matching ^[A-Za-z0-9-]{1,39}$ or free text of at most 500 characters. */
 export function parseScoutBody(text: string): ParsedBody {
@@ -21,6 +21,13 @@ export function parseScoutBody(text: string): ParsedBody {
     return { ok: false, message: "Body must be a JSON object." };
   }
   const b = body as Record<string, unknown>;
+  let orgs: string[] | undefined;
+  if (b.orgs !== undefined) {
+    if (!Array.isArray(b.orgs) || b.orgs.length > 20 || !b.orgs.every((o) => typeof o === "string" && o.length > 0 && o.length <= 100)) {
+      return { ok: false, message: "orgs must be an array of organisation logins." };
+    }
+    if (b.orgs.length > 0) orgs = b.orgs as string[];
+  }
   const hasHandle = b.handle !== undefined;
   const hasText = b.profileText !== undefined;
   if (hasHandle === hasText) return { ok: false, message: "Send exactly one of \"handle\" or \"profileText\"." };
@@ -28,7 +35,7 @@ export function parseScoutBody(text: string): ParsedBody {
     if (!isValidHandle(b.handle)) {
       return { ok: false, message: "handle must be 1 to 39 letters, digits or hyphens." };
     }
-    return { ok: true, input: { handle: b.handle } };
+    return { ok: true, input: { handle: b.handle }, ...(orgs ? { orgs } : {}) };
   }
   if (typeof b.profileText !== "string" || b.profileText.trim().length === 0) {
     return { ok: false, message: "profileText must be a non-empty string." };
@@ -36,7 +43,7 @@ export function parseScoutBody(text: string): ParsedBody {
   if (b.profileText.trim().length > MAX_PROFILE_TEXT_CHARS) {
     return { ok: false, message: `profileText must be at most ${MAX_PROFILE_TEXT_CHARS} characters.` };
   }
-  return { ok: true, input: { profileText: b.profileText } };
+  return { ok: true, input: { profileText: b.profileText }, ...(orgs ? { orgs } : {}) };
 }
 
 async function sha256Hex(text: string): Promise<string> {
@@ -53,6 +60,15 @@ const json = (body: unknown, status: number, headers: Record<string, string> = {
   Response.json(body, { status, headers });
 
 /** POST /scout (ARCHITECTURE s4). `deps` is an injection point for tests; production builds GitHub sources. */
+/** GET /orgs: the enabled registry, so the UI can render filter buttons. */
+export function handleOrgs(request: Request, deps: Pick<Deps, "registry">): Response {
+  if (request.method !== "GET") return json({ error: "Use GET." }, 405, { Allow: "GET" });
+  return json(
+    deps.registry.filter((o) => o.enabled).map((o) => ({ login: o.login, displayName: o.displayName })),
+    200,
+  );
+}
+
 export async function handleScout(
   request: Request,
   env: Env,
@@ -62,6 +78,13 @@ export async function handleScout(
 
   const parsed = parseScoutBody(await request.text());
   if (!parsed.ok) return json({ error: parsed.message }, 400);
+
+  let orgs: string[] | undefined;
+  if (parsed.orgs) {
+    const r = resolveOrgs(deps.registry, parsed.orgs);
+    if (r.unknown.length > 0) return json({ error: `Unknown organisation: ${r.unknown.join(", ")}.` }, 400);
+    orgs = r.orgs;
+  }
 
   const rl = await checkRateLimit(deps.cache, await ipKey(request.headers.get("cf-connecting-ip")), deps.now());
   if (!rl.allowed) {
@@ -73,7 +96,11 @@ export async function handleScout(
   }
 
   try {
-    const out = await runScout(parsed.input, deps);
+    const out = await runScout(
+      parsed.input,
+      deps,
+      orgs ? { excludeRepos: [], excludeIssues: [], orgs } : undefined,
+    );
     return json(
       {
         profile: out.profile,
@@ -81,6 +108,8 @@ export async function handleScout(
         runnersUp: out.runnersUp,
         snapshot: out.snapshot,
         explanations: out.explanationsStatus,
+        orgCounts: out.orgCounts,
+        ...(out.orgs ? { orgs: out.orgs } : {}),
         ...(out.warnings.length > 0 ? { warnings: out.warnings } : {}),
       },
       200,

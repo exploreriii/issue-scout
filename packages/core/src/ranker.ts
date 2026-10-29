@@ -64,8 +64,8 @@ export function scoreCandidate(c: Candidate, profile: Profile, prefs: Preference
   const band = profile.experienceBand;
   if (c.tier === "firstIssue" && band <= 1) add(2, "Labelled for first-timers");
   else if (c.tier === "helpWanted" && band === 2) add(2, "Help-wanted matches your experience");
-  else if (c.tier === "firstIssue" && band === 2) add(-1, "Labelled firstIssue; may be too small");
-  else if (c.tier === "helpWanted" && band === 0) add(-1, "Labelled helpWanted; may be too large");
+  else if (c.tier === "firstIssue" && band === 2) add(-1, "Labelled as a first issue; may be too small for you");
+  else if (c.tier === "helpWanted" && band === 0) add(-1, "Labelled help-wanted; may be too large for a first issue");
 
   // Assignee: candidates are unassigned by construction
   if (c.assignees === 0) add(2, "Unassigned");

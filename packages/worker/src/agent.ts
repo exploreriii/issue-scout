@@ -1,9 +1,10 @@
 import { Agent, type Connection, type ConnectionContext, type WSMessage } from "agents";
+import type { Ranked } from "@issue-scout/core";
 import { HANDLE_RE, ProfileNotFoundError, RATE_LIMIT_PER_HOUR, checkRateLimit, type ScoutInput } from "@issue-scout/sources";
 import { interpretWithAi, parseCommand, type Command } from "./commands";
 import type { Env } from "./env";
 import { describeError, logFailure } from "./errors";
-import { createDeps, runScout, type Deps } from "./flow";
+import { createDeps, runScout, type Deps, type OrgCounts } from "./flow";
 import { MAX_PROFILE_TEXT_CHARS, MAX_USER_MESSAGE_CHARS } from "./limits";
 import { ipKey } from "./routes/scout";
 import {
@@ -31,7 +32,15 @@ import {
 export type { IssueScoutState } from "./state";
 
 const HELP =
-  'Try: "only Rust", "exclude org/repo", "why not <issue url>", "context org/repo", "watch 2 for 7 days", "explain 3".';
+  'Try: "only Rust", "only org hiero-hackers", "all orgs", "exclude org/repo", "why not <issue url>", "context org/repo", "watch 2 for 7 days", "explain 3".';
+
+type Reply = {
+  text: string;
+  shortlist?: ShortlistItem[];
+  runnersUp?: Ranked[];
+  orgCounts?: OrgCounts;
+  orgs?: string[];
+};
 
 type Action = ToolCall | { tool: "exclude"; repo: string };
 
@@ -39,6 +48,8 @@ function commandToAction(c: Command): Action {
   switch (c.cmd) {
     case "only":
       return { tool: "refine", languages: c.languages };
+    case "orgs":
+      return { tool: "refine", orgs: c.orgs };
     case "exclude":
       return { tool: "exclude", repo: c.repo };
     case "whyNot":
@@ -50,6 +61,17 @@ function commandToAction(c: Command): Action {
     case "explain":
       return { tool: "explain", issue: c.n };
   }
+}
+
+/** A seed is a ScoutInput the UI already used; it gets the same validation as the first chat message. */
+function parseSeed(raw: unknown): ScoutInput | null {
+  if (raw === null || typeof raw !== "object") return null;
+  const r = raw as { handle?: unknown; profileText?: unknown };
+  if (typeof r.handle === "string" && HANDLE_RE.test(r.handle)) return { handle: r.handle };
+  if (typeof r.profileText === "string" && r.profileText.trim() && r.profileText.length <= MAX_PROFILE_TEXT_CHARS) {
+    return { profileText: r.profileText };
+  }
+  return null;
 }
 
 function toInput(text: string): ScoutInput {
@@ -90,16 +112,19 @@ export class IssueScoutAgent extends Agent<Env, IssueScoutState> {
     } catch {
       return;
     }
-    const m = data as { type?: unknown; text?: unknown };
+    const m = data as { type?: unknown; text?: unknown; seed?: unknown };
     if (m.type !== "user" || typeof m.text !== "string") return;
     const text = m.text.trim();
     if (!text) return;
     const ip = (connection.state as { ip?: string } | null)?.ip ?? "unknown";
 
     const run = this.serial.then(async () => {
-      let reply: { text: string; shortlist?: ShortlistItem[] };
+      let reply: Reply;
       try {
         await this.ensureExpiry();
+        // The UI fetches its first shortlist over POST /scout, so it passes the same input once to seed this session.
+        const seed = parseSeed(m.seed);
+        if (seed && !this.state.profile) await this.seedSession(this.buildDeps(), seed);
         reply = await this.handleUser(text.slice(0, MAX_USER_MESSAGE_CHARS), ip);
       } catch (e) {
         logFailure("agent message", e);
@@ -143,7 +168,7 @@ export class IssueScoutAgent extends Agent<Env, IssueScoutState> {
 
   // -- message handling -----------------------------------------------------
 
-  private async handleUser(text: string, ip: string): Promise<{ text: string; shortlist?: ShortlistItem[] }> {
+  private async handleUser(text: string, ip: string): Promise<Reply> {
     const deps = this.buildDeps();
     if (!this.state.profile) return this.firstMessage(deps, text, ip);
 
@@ -157,9 +182,13 @@ export class IssueScoutAgent extends Agent<Env, IssueScoutState> {
 
     const result = await this.runAction(deps, action);
     if (result.state) this.setState({ ...this.state, ...result.state });
-    return result.shortlist && result.shortlist.length > 0
-      ? { text: result.text, shortlist: result.shortlist }
-      : { text: result.text };
+    const reply: Reply = { text: result.text };
+    // A refine always carries its list, even an empty one, so the UI never keeps showing a stale shortlist.
+    if (result.shortlist && (result.shortlist.length > 0 || result.orgs !== undefined)) reply.shortlist = result.shortlist;
+    if (result.state?.ranked) reply.runnersUp = result.state.ranked.runnersUp;
+    if (result.orgCounts) reply.orgCounts = result.orgCounts;
+    if (result.orgs) reply.orgs = result.orgs;
+    return reply;
   }
 
   private runAction(deps: Deps, a: Action): Promise<ToolResult> {
@@ -185,6 +214,22 @@ export class IssueScoutAgent extends Agent<Env, IssueScoutState> {
     }
   }
 
+  /** Build the profile and shortlist for `input` and store them as this session's state. */
+  private async seedSession(deps: Deps, input: ScoutInput) {
+    const out = await runScout(input, deps);
+    this.setState({
+      ...this.state,
+      profile: out.profile,
+      input,
+      snapshotId: out.snapshot.id,
+      candidatesRef: out.candidatesRef,
+      ranked: { top: out.top, runnersUp: out.runnersUp },
+      explanations: out.explanations,
+      createdAt: deps.now().toISOString(),
+    });
+    return out;
+  }
+
   private async firstMessage(deps: Deps, text: string, ip: string) {
     const input = toInput(text);
     if ("profileText" in input && input.profileText.length > MAX_PROFILE_TEXT_CHARS) {
@@ -197,17 +242,7 @@ export class IssueScoutAgent extends Agent<Env, IssueScoutState> {
     }
 
     try {
-      const out = await runScout(input, deps);
-      this.setState({
-        ...this.state,
-        profile: out.profile,
-        input,
-        snapshotId: out.snapshot.id,
-        candidatesRef: out.candidatesRef,
-        ranked: { top: out.top, runnersUp: out.runnersUp },
-        explanations: out.explanations,
-        createdAt: deps.now().toISOString(),
-      });
+      const out = await this.seedSession(deps, input);
       const who = out.profile.handle ? `for ${out.profile.handle}` : "for that profile";
       if (out.top.length === 0) {
         return { text: `No open good-first-issue matches ${who} right now. ${HELP}` };
@@ -217,6 +252,7 @@ export class IssueScoutAgent extends Agent<Env, IssueScoutState> {
       return {
         text: `Here are your top ${out.top.length} matches ${who}:\n${lines.join("\n")}${note}\n${HELP}`,
         shortlist: toShortlist(out.top, out.explanations),
+        orgCounts: out.orgCounts,
       };
     } catch (e) {
       logFailure("agent scout", e);

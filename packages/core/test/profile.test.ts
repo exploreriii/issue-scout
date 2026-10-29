@@ -53,3 +53,16 @@ describe("profileFromGithub", () => {
     expect(profileFromGithub({ login: "me" }, repos, 2)).toEqual(profileFromGithub({ login: "me" }, [...repos], 2));
   });
 });
+
+describe("profileFromGithub fork fallback", () => {
+  it("uses forks when the account has no non-fork repositories with a language", () => {
+    const repos = [
+      { language: "TypeScript", pushed_at: "2026-10-01T00:00:00Z", fork: true },
+      { language: "Python", pushed_at: "2026-09-01T00:00:00Z", fork: true },
+      { language: null, pushed_at: "2026-09-01T00:00:00Z", fork: true },
+    ] as never;
+    const p = profileFromGithub({ login: "forker" }, repos, 10);
+    expect(p.languages.map((l) => l.name).sort()).toEqual(["Python", "TypeScript"]);
+    expect(p.experienceBand).toBe(2);
+  });
+});

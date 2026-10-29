@@ -59,7 +59,7 @@ export async function snapshotKey(org: OrgConfig): Promise<string> {
   return `snap:${org.login}:${(await sha256Hex(aliases)).slice(0, 12)}:all`;
 }
 
-export const profileKey = (handle: string) => `profile:${handle.toLowerCase()}`;
+export const profileKey = (handle: string) => `profile:v2:${handle.toLowerCase()}`; // v2: fork fallback for languages
 
 export async function snapshotId(orgLogins: string[], recordedAt: string): Promise<string> {
   return sha256Hex(`${[...orgLogins].sort().join(",")}|${recordedAt}`);

@@ -25,6 +25,9 @@ export function describeError(e: unknown, now: Date = new Date()): Described {
     const wait = e.resetAt ? Math.max(1, Math.ceil(e.resetAt - now.getTime() / 1000)) : 60;
     return { status: 503, message: "GitHub is rate limiting this service right now. Try again in a few minutes.", retryAfterSeconds: wait };
   }
+  if (e instanceof GithubApiError && e.message.startsWith("GitHub rejected an unauthenticated request")) {
+    return { status: 503, message: "GitHub requires a token for this service. The operator must set GITHUB_TOKEN (read-only)." };
+  }
   if (e instanceof GithubApiError) return { status: 502, message: "GitHub did not answer. Try again shortly." };
   return { status: 500, message: "Something went wrong. Try again shortly." };
 }

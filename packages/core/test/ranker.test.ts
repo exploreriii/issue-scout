@@ -23,13 +23,13 @@ describe("ranking rules", () => {
   it("firstIssue with band<=1 +2; band 2 gets -1 'too small'", () => {
     expect(reasons(cand(), profile({ experienceBand: 0 }))).toContain("Labelled for first-timers");
     const r = reasons(cand(), profile({ experienceBand: 2 }));
-    expect(r).toContain("Labelled firstIssue; may be too small");
+    expect(r).toContain("Labelled as a first issue; may be too small for you");
     expect(r).not.toContain("Labelled for first-timers");
   });
   it("helpWanted band 2 +2; band 0 gets -1 'too large'; band 1 neutral", () => {
     const h = cand({ tier: "helpWanted" });
     expect(reasons(h, profile({ experienceBand: 2 }))).toContain("Help-wanted matches your experience");
-    expect(reasons(h, profile({ experienceBand: 0 }))).toContain("Labelled helpWanted; may be too large");
+    expect(reasons(h, profile({ experienceBand: 0 }))).toContain("Labelled help-wanted; may be too large for a first issue");
     const mid = reasons(h, profile({ experienceBand: 1 })).join("|");
     expect(mid).not.toMatch(/Help-wanted matches|may be too/);
   });

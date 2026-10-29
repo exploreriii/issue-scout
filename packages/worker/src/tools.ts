@@ -9,7 +9,7 @@ import {
 import { explain } from "@issue-scout/explainer";
 import { GithubApiError, GithubRateLimitError, scout, type ScoutInput } from "@issue-scout/sources";
 import { z } from "zod";
-import { loadRaw, recordRateLimit, rerank, type Deps } from "./flow";
+import { loadRaw, recordRateLimit, rerank, resolveOrgs, type Deps, type OrgCounts } from "./flow";
 import {
   MAX_WATCHES,
   allRanked,
@@ -31,6 +31,9 @@ export interface ToolResult {
   text: string;
   shortlist?: ShortlistItem[];
   state?: Partial<IssueScoutState>;
+  /** Candidates per org before the org filter, and the org filter now applied (refine only). */
+  orgCounts?: OrgCounts;
+  orgs?: string[];
 }
 
 export const contribKey = (org: string, repo: string) => `contrib:${org}/${repo}`.toLowerCase();
@@ -45,6 +48,8 @@ export const ToolCall = z.discriminatedUnion("tool", [
   z.object({
     tool: z.literal("refine"),
     languages: z.array(z.string().min(1).max(40)).max(5).optional(),
+    /** Org logins to include; an empty array means all orgs. */
+    orgs: z.array(z.string().min(1).max(100)).max(20).optional(),
     timeBudgetHours: z.number().positive().max(200).optional(),
     wantsTests: z.boolean().optional(),
     excludeRepos: z.array(z.string().min(1).max(140)).max(10).optional(),
@@ -73,13 +78,17 @@ function listing(top: Ranked[]): string {
 // refine
 // ---------------------------------------------------------------------------
 
-export type RefinePatch = Partial<Pick<Preferences, "languages" | "timeBudgetHours" | "wantsTests">> & {
+export type RefinePatch = Partial<Pick<Preferences, "languages" | "orgs" | "timeBudgetHours" | "wantsTests">> & {
   excludeRepos?: string[];
 };
 
 export function mergePreferences(base: Preferences, patch: RefinePatch): Preferences {
   const next: Preferences = { ...base };
   if (patch.languages) next.languages = patch.languages;
+  if (patch.orgs) {
+    if (patch.orgs.length === 0) delete next.orgs;
+    else next.orgs = patch.orgs;
+  }
   if (patch.timeBudgetHours !== undefined) next.timeBudgetHours = patch.timeBudgetHours;
   if (patch.wantsTests !== undefined) next.wantsTests = patch.wantsTests;
   if (patch.excludeRepos) next.excludeRepos = [...new Set([...base.excludeRepos, ...patch.excludeRepos])];
@@ -106,18 +115,37 @@ async function runScoutNoExplain(deps: Deps, input: ScoutInput, profiles: Deps["
 
 export async function refine(deps: Deps, state: IssueScoutState, patch: RefinePatch): Promise<ToolResult> {
   if (!state.profile) return { text: "Send me your GitHub handle or a short description of your skills first." };
+  if (patch.orgs && patch.orgs.length > 0) {
+    const r = resolveOrgs(deps.registry, patch.orgs);
+    if (r.unknown.length > 0) return { text: `I do not know the organisation ${r.unknown.join(", ")}.` };
+    patch = { ...patch, orgs: r.orgs };
+  }
   const preferences = mergePreferences(state.preferences, patch);
   const next: IssueScoutState = { ...state, preferences };
   const snap = await ensureRaw(deps, next);
   if (!snap) return { text: "I could not load the issue snapshot just now. Please try again shortly." };
 
-  const { top, runnersUp } = rerank(snap.raw, deps.registry, state.profile, effectivePreferences(next), deps.now());
-  const shortlist = toShortlist(top, state.explanations);
+  const { top, runnersUp, orgCounts } = rerank(snap.raw, deps.registry, state.profile, effectivePreferences(next), deps.now());
+  // Explain only the issues that entered the top five since the last explanation run (one model call, or none).
+  const known = new Set((state.explanations ?? []).map((e) => e.issueId));
+  const missing = top.filter((r) => !known.has(r.issue.id));
+  let explanations = state.explanations ?? [];
+  if (missing.length > 0) {
+    const ex = await explain(missing, state.profile, { ai: deps.ai, model: deps.model });
+    if (ex.status === "ok") explanations = [...explanations, ...ex.explanations];
+  }
+  const shortlist = toShortlist(top, explanations);
   const text =
     top.length === 0
       ? "Nothing matches those filters. Try relaxing one, for example a different language."
-      : `Re-ranked from the cached snapshot. Your top ${top.length}:\n${listing(top)}`;
-  return { text, shortlist, state: { preferences, ranked: { top, runnersUp } } };
+      : `Re-ranked: ${top.length} issue${top.length === 1 ? "" : "s"} match now. The cards above are updated.`;
+  return {
+    text,
+    shortlist,
+    state: { preferences, ranked: { top, runnersUp }, explanations },
+    orgCounts,
+    orgs: preferences.orgs ?? [],
+  };
 }
 
 /** "exclude <repo>": remember the rejection, then re-rank. */

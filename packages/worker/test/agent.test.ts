@@ -6,11 +6,11 @@ import { clearKv, makeDeps, snapshot, type TestDeps } from "./helpers";
 
 beforeEach(clearKv);
 
-type Reply = { type: string; text: string; shortlist?: any[] };
+type Reply = { type: string; text: string; shortlist?: any[]; orgCounts?: Record<string, number>; orgs?: string[] };
 
 interface Session {
   t: TestDeps;
-  send(text: string): Promise<Reply>;
+  send(text: string, seed?: unknown): Promise<Reply>;
   /** Next assistant frame that was not a reply to send() (e.g. a watch result). */
   next(): Promise<Reply>;
   state(): Promise<IssueScoutState>;
@@ -59,8 +59,8 @@ async function open(): Promise<Session> {
   return {
     t,
     next,
-    async send(text) {
-      ws.send(JSON.stringify({ type: "user", text }));
+    async send(text, seed) {
+      ws.send(JSON.stringify({ type: "user", text, ...(seed ? { seed } : {}) }));
       return next();
     },
     state: () => inspect((a) => a.state),
@@ -110,6 +110,47 @@ describe("IssueScoutAgent", () => {
     expect(s.t.fetches).toEqual(before);
     expect(s.t.gh.calls.length).toBe(callsBefore);
     expect((await s.state()).preferences.languages).toEqual(["Rust"]);
+  });
+
+  it("filters by org from the cached snapshot with zero fetches, and 'all orgs' clears it", async () => {
+    const s = await open();
+    const first = await s.send("exploreriii");
+    expect(first.orgCounts!["hiero-ledger"]).toBeGreaterThan(0);
+    expect(first.orgCounts!["LFDT-CLPR"]).toBe(0);
+    const before = { ...s.t.fetches };
+    const callsBefore = s.t.gh.calls.length;
+
+    const only = await s.send("only org hiero-hackers");
+    expect(only.shortlist!.length).toBeGreaterThan(0);
+    for (const item of only.shortlist!) expect(item.issue.org).toBe("hiero-hackers");
+    expect(only.orgs).toEqual(["hiero-hackers"]);
+    expect(only.orgCounts).toEqual(first.orgCounts);
+    expect((await s.state()).preferences.orgs).toEqual(["hiero-hackers"]);
+
+    const both = await s.send("only orgs hiero-ledger, hiero-hackers");
+    expect(both.orgs).toEqual(["hiero-ledger", "hiero-hackers"]);
+
+    const all = await s.send("all orgs");
+    expect(all.orgs).toEqual([]);
+    expect((await s.state()).preferences.orgs).toBeUndefined();
+    expect(s.t.fetches).toEqual(before);
+    expect(s.t.gh.calls.length).toBe(callsBefore);
+  });
+
+  it("rejects an unknown org in a refine", async () => {
+    const s = await open();
+    await s.send("exploreriii");
+    const reply = await s.send("only org nope-org");
+    expect(reply.text).toContain("nope-org");
+    expect((await s.state()).preferences.orgs).toBeUndefined();
+  });
+
+  it("a seed from the UI builds the session so a first refine works without a handle message", async () => {
+    const s = await open();
+    const reply = await s.send("only org hiero-hackers", { handle: "exploreriii" });
+    expect(reply.shortlist!.length).toBeGreaterThan(0);
+    for (const item of reply.shortlist!) expect(item.issue.org).toBe("hiero-hackers");
+    expect((await s.state()).profile?.handle).toBe("exploreriii");
   });
 
   it("refills an expired snapshot through the sources, not the network", async () => {
@@ -200,7 +241,7 @@ describe("IssueScoutAgent", () => {
     expect((await s.state()).explanations).toEqual([]);
     s.t.ai.failExplain = false;
     const r = await s.send("explain 2");
-    expect(r.text).toContain("Fit: fits you");
+    expect(r.text).toContain("Fit: Your recent work matches");
     expect(r.shortlist![1].explanation).toBeDefined();
     expect((await s.state()).explanations).toHaveLength(1);
   });

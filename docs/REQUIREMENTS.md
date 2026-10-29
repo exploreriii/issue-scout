@@ -18,6 +18,7 @@
 | FR-13 | The org registry is configuration (`orgs.json`): login, display name, label alias sets (`firstIssue`, `helpWanted`, `claimed`, `exclude`), default languages, enabled flag. Adding an org needs no code change. | registry validation |
 | FR-14 | `GET /health` reports per-org snapshot age, GitHub rate-limit remaining and AI Gateway reachability. | integration |
 | FR-15 | No GitHub writes. The token, if any, has read-only public scope. The code has no write endpoints. | code review, CI scope check |
+| FR-16 | Organisation filter: the user can restrict the shortlist to chosen registry orgs. `orgs` is a hard filter applied before ranking; per-org candidate counts (before the org filter) are returned so the UI can show them. Refining by org makes no GitHub calls. | unit, UI test |
 
 ## Non-functional
 | ID | Requirement | Target | Verified by |

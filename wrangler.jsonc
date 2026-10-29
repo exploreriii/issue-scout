@@ -1,20 +1,49 @@
 {
-  "$schema": "node_modules/wrangler/config-schema.json",
-  "name": "issue-scout",
-  "main": "packages/worker/src/index.ts",
-  "compatibility_date": "2026-06-11",
-  "compatibility_flags": ["nodejs_compat"],
-  "ai": { "binding": "AI" },
-  "kv_namespaces": [{ "binding": "CACHE", "id": "<fill-after-create>" }],
-  "assets": {
-    "directory": "ui/dist",
-    "binding": "ASSETS",
-    "not_found_handling": "single-page-application",
-    "run_worker_first": ["/agents/*", "/health", "/scout"]
-  },
-  "durable_objects": {
-    "bindings": [{ "name": "IssueScoutAgent", "class_name": "IssueScoutAgent" }]
-  },
-  "migrations": [{ "tag": "v1", "new_sqlite_classes": ["IssueScoutAgent"] }],
-  "vars": { "ORGS_FILE": "orgs.json" }
+	"$schema": "node_modules/wrangler/config-schema.json",
+	"name": "issue-scout",
+	"main": "packages/worker/src/index.ts",
+	"compatibility_date": "2026-06-11",
+	"compatibility_flags": [
+		"nodejs_compat"
+	],
+	"ai": {
+		"binding": "AI"
+	},
+	"kv_namespaces": [
+		{
+			"binding": "CACHE",
+			"id": "67e2248d46784d36b65dfc6a4ce1fc73"
+		}
+	],
+	"assets": {
+		"directory": "ui/dist",
+		"binding": "ASSETS",
+		"not_found_handling": "single-page-application",
+		"run_worker_first": [
+			"/orgs",
+			"/agents/*",
+			"/health",
+			"/scout"
+		]
+	},
+	"durable_objects": {
+		"bindings": [
+			{
+				"name": "IssueScoutAgent",
+				"class_name": "IssueScoutAgent"
+			}
+		]
+	},
+	"migrations": [
+		{
+			"tag": "v1",
+			"new_sqlite_classes": [
+				"IssueScoutAgent"
+			]
+		}
+	],
+	"vars": {
+		"ORGS_FILE": "orgs.json",
+		"AI_MODEL": "@cf/meta/llama-3.3-70b-instruct-fp8-fast"
+	}
 }

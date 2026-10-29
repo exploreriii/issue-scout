@@ -24,7 +24,10 @@ function normalise(m: Map<string, number>): { name: string; weight: number }[] {
  * Forks are ignored. Repo weight: pushed within 1y = 1, within 3y = 0.5, else 0.25.
  */
 export function profileFromGithub(user: GithubUser, repos: GithubRepo[], mergedPrCount: number): Profile {
-  const own = repos.filter((r) => !r.fork && r.language);
+  // Prefer the person's own repositories; fall back to forks, which is where most
+  // open-source contributors keep the code they actually work on.
+  let own = repos.filter((r) => !r.fork && r.language);
+  if (own.length === 0) own = repos.filter((r) => r.language);
   const times = own.map((r) => (r.pushed_at ? Date.parse(r.pushed_at) : NaN)).filter((t) => !Number.isNaN(t));
   const ref = times.length ? Math.max(...times) : 0;
   const weights = new Map<string, number>();
