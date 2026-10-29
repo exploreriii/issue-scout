@@ -20,14 +20,31 @@ jobs:
         with:
           node-version: 26
           cache: pnpm
+      - name: Check deploy secrets
+        id: secrets
+        env:
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CF_ACCOUNT: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: |
+          if [ -z "$CF_TOKEN" ] || [ -z "$CF_ACCOUNT" ]; then
+            echo "::notice::CLOUDFLARE_API_TOKEN or CLOUDFLARE_ACCOUNT_ID is not set; skipping deploy."
+            echo "ok=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "ok=true" >> "$GITHUB_OUTPUT"
+          fi
       - run: pnpm install --frozen-lockfile
+        if: steps.secrets.outputs.ok == 'true'
       - run: pnpm --filter @issue-scout/ui --if-present build
+        if: steps.secrets.outputs.ok == 'true'
       - run: mkdir -p ui/dist
+        if: steps.secrets.outputs.ok == 'true'
       - name: Check the GitHub token is read-only
+        if: steps.secrets.outputs.ok == 'true'
         run: node scripts/check-token-scope.mjs
         env:
           GITHUB_TOKEN: ${{ secrets.GH_READ_TOKEN }}
       - run: pnpm exec wrangler deploy
+        if: steps.secrets.outputs.ok == 'true'
         env:
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
