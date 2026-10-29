@@ -1,0 +1,46 @@
+{
+  "data": {
+    "search": {
+      "pageInfo": { "hasNextPage": true, "endCursor": "Y3Vyc29yOjEwMA==" },
+      "nodes": [
+        {
+          "id": "I_kwDOC8OKfc7yYL_c",
+          "number": 13130,
+          "title": "HIP-1056 Set block number in transformed TransactionReceipt",
+          "body": "### Problem\n\nCN will add `block_number` to `transaction_receipt`.\n\n### Solution\n\nSet block number.",
+          "url": "https://github.com/hiero-ledger/hiero-mirror-node/issues/13130",
+          "createdAt": "2026-03-12T18:19:27Z",
+          "updatedAt": "2026-10-19T22:44:40Z",
+          "assignees": { "totalCount": 0 },
+          "comments": { "totalCount": 3, "nodes": [{ "body": "I'd like to take this one" }] },
+          "labels": { "nodes": [{ "name": "enhancement" }, { "name": "Good First Issue" }, { "name": "importer" }] },
+          "repository": {
+            "name": "hiero-mirror-node",
+            "primaryLanguage": { "name": "Java" },
+            "repositoryTopics": { "nodes": [{ "topic": { "name": "hedera" } }, { "topic": { "name": "mirror-node" } }] },
+            "pullRequests": { "nodes": [{ "mergedAt": "2026-10-27T10:00:00Z" }] }
+          }
+        },
+        {
+          "id": "I_kwDORZporc8AAAABZmc9rA",
+          "number": 601,
+          "title": "Activate DRY-RUN mode for automations",
+          "body": null,
+          "url": "https://github.com/hiero-ledger/analytics/issues/601",
+          "createdAt": "2026-10-24T12:38:51Z",
+          "updatedAt": "2026-10-24T12:43:27Z",
+          "assignees": { "totalCount": 1 },
+          "comments": { "totalCount": 0, "nodes": [] },
+          "labels": { "nodes": [{ "name": "good first issue" }] },
+          "repository": {
+            "name": "analytics",
+            "primaryLanguage": null,
+            "repositoryTopics": { "nodes": [] },
+            "pullRequests": { "nodes": [] }
+          }
+        },
+        {}
+      ]
+    }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "data": {
+    "search": {
+      "pageInfo": { "hasNextPage": false, "endCursor": "Y3Vyc29yOjIwMA==" },
+      "nodes": [
+        {
+          "id": "I_second_page_1",
+          "number": 7,
+          "title": "Add a unit test",
+          "body": "x",
+          "url": "https://github.com/hiero-ledger/hiero-sdk-python/issues/7",
+          "createdAt": "2026-09-01T00:00:00Z",
+          "updatedAt": "2026-10-01T00:00:00Z",
+          "assignees": { "totalCount": 0 },
+          "comments": { "totalCount": 1, "nodes": [{ "body": "Thanks for filing" }] },
+          "labels": { "nodes": [{ "name": "good first issue" }] },
+          "repository": {
+            "name": "hiero-sdk-python",
+            "primaryLanguage": { "name": "Python" },
+            "repositoryTopics": { "nodes": [{ "topic": { "name": "sdk" } }] },
+            "pullRequests": { "nodes": [{ "mergedAt": "2026-10-28T09:00:00Z" }] }
+          }
+        }
+      ]
+    }
+  }
+}
