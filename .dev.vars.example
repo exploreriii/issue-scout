@@ -1,0 +1,2 @@
+# Optional. A read-only GitHub token with public-repository scope, or leave empty.
+GITHUB_TOKEN=

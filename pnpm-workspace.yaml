@@ -1,0 +1,15 @@
+packages:
+  - "packages/*"
+  - "ui"
+
+allowBuilds:
+  core-js-pure: true
+  esbuild: true
+  workerd: true
+  sharp: true
+  fsevents: true
+
+minimumReleaseAgeExclude:
+  - "@cloudflare/vitest-plugin@1.4.10"
+  - miniflare@5.20261023.2-beta
+  - wrangler@4.155.0

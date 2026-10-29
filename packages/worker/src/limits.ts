@@ -1,0 +1,2 @@
+export const MAX_PROFILE_TEXT_CHARS = 500; // FR-1
+export const MAX_USER_MESSAGE_CHARS = 2000;

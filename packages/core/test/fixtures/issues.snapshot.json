@@ -1,0 +1,921 @@
+{
+  "recordedAt": "2026-10-29T07:53:19Z",
+  "orgs": [
+    "hiero-ledger",
+    "hiero-hackers",
+    "LFDT-CLPR"
+  ],
+  "issues": [
+    {
+      "id": "I_kwDORZporc8AAAABZmc9rA",
+      "org": "hiero-hackers",
+      "repo": "analytics",
+      "number": 601,
+      "title": "Activate DRY-RUN mode for automations",
+      "body": "<!-- Everything outside \"The task\" is boilerplate — leave it, or trim what doesn't apply. -->\n\n> 🐥 **Good First Issue** — a small, well-contained change designed for first-time contributors.\n> **Time:** ~4 hours including setup · **Prerequisites:** none — beginner programming is enough. No Hiero, Hedera, or data-science background needed.\n> Setup takes minutes: see the [contributor guide](https://github.com/hiero-hackers/analytics/blob/main/CONTRIBUTING.md#setup).\n\n## The task\nWe have https://github.com/hiero-hackers/analytics/blob/main/sdk-automations.yml which triggers certain automations, which are currently on `observe` mode.\n\nWe want to turn each of these capabilities from `observe` mode to `dry-run`\n\nChange the seven mode: observe lines to mode: dry-run: the file’s top line and the one in each of the six capability blocks (triageQueue, prDashboard, configReport, inactivity, assignment). Reword the header comment, which says “Observe only”, so it describes dry-run. Nothing else in the file changes, and the workflow file does not change.\n\n## How to work on this\n\n1. **Claim it:** comment `/assign` and wait to be assigned — unassigned PRs are closed automatically.\n2. **Get a plan:** once assigned, comment `@coderabbitai plan` for a draft implementation plan. It's a starting point, not a spec — checking it against the real code is part of the task.\n3. **Set up and solve it** with the [setup](https://github.com/hiero-hackers/analytics/blob/main/CONTRIBUTING.md#setup) and [workflow](https://github.com/hiero-hackers/analytics/blob/main/CONTRIBUTING.md#workflow) guides. Ask questions early, on this issue or [Discord](https://github.com/hiero-ledger/sdk-collaboration-hub/tree/main/guides/issue-progression/for-developers/discord.md).\n\n**🤖 AI:** tools are welcome; verified work is required. You must have run the code and tests yourself, be able to explain every line, and have read the files above with your own eyes — see the [AI policy](https://github.com/hiero-hackers/an",
+      "url": "https://github.com/hiero-hackers/analytics/issues/601",
+      "labels": [
+        "good first issue"
+      ],
+      "assignees": 0,
+      "comments": 1,
+      "createdAt": "2026-10-24T12:38:51Z",
+      "updatedAt": "2026-10-24T12:43:27Z",
+      "repoLanguage": "Python",
+      "repoTopics": [
+        "data-analytics",
+        "data-engineering",
+        "data-science",
+        "data-structures",
+        "data-visualization",
+        "github-api",
+        "good-first-issue",
+        "hiero",
+        "supervised-machine-learning",
+        "new-contributors-welcome"
+      ],
+      "repoLastMergedPrAt": null
+    },
+    {
+      "id": "I_kwDOC8OKfc7yYL_c",
+      "org": "hiero-ledger",
+      "repo": "hiero-mirror-node",
+      "number": 13130,
+      "title": "HIP-1056 Set block number in transformed TransactionReceipt",
+      "body": "### Problem\n\nCN will add `block_number` to `transaction_receipt`, for completeness, MN should set the field in the transformed transaction receipt.\n\nNote: MN itself doesn't depend on the new field.\n\n### Solution\n\nSet block number to the new field in transaction receipt during transformation.\n\n### Alternatives\n\n_No response_",
+      "url": "https://github.com/hiero-ledger/hiero-mirror-node/issues/13130",
+      "labels": [
+        "enhancement",
+        "Good First Issue",
+        "importer"
+      ],
+      "assignees": 0,
+      "comments": 1,
+      "createdAt": "2026-03-12T18:19:27Z",
+      "updatedAt": "2026-10-19T22:44:40Z",
+      "repoLanguage": "Java",
+      "repoTopics": [],
+      "repoLastMergedPrAt": null
+    },
+    {
+      "id": "I_kwDOMpAfic8AAAABTLt5AQ",
+      "org": "hiero-ledger",
+      "repo": "hiero-website",
+      "number": 676,
+      "title": "Create an implementation for the governance issue 748",
+      "body": "### 🆕🐥 Newcomer Friendly\n\nWelcome! This is a **[Good First Issue](https://github.com/issues?q=is%3Aopen%20is%3Aissue%20org%3Ahiero-ledger%20archived%3Afalse%20no%3Aassignee%20label%3A%22good%20first%20issue%22%20repo%3Ahiero-ledger%2Fhiero-website)** designed to be approachable to brand-new contributors.\n\n🏁 **When this issue is complete, you will have:**\n\n✅ Learned how to fork and navigate the codebase\n✅ Learned our contribution workflow\n✅ Implemented a real change to the website\n\n\n### 🐞 Problem Description\n\n<!-- Describe the issue here -->\nCreate in implementation of the issue\nhttps://github.com/hiero-ledger/governance/issues/748\n\n<!-- Identify which files to look at -->  \n\n\n### 💡 Solution\n\n<!-- Describe the solution here -->\n\n\n### 🛠️ Implementation Steps\n\n<!-- Identify what to change in which files -->\n\n<!-- Provide the step by step solution -->\n\n\n### 🧠 Good First Issue Developers — Prerequisites & Expectations\n\n> [!IMPORTANT]\n> **This issue does not require prior domain knowledge.**\n>\n> - No Hiero or Hedera experience needed  \n> - No distributed ledger background required  \n> - **Beginner web development skills are sufficient**\n\n> [!NOTE]\n> ⏱️ **Typical time to complete:** ~1 Day / ~4 hours (including set-up)  \n> 🧩 **Difficulty:** Small, well-contained change  \n> 🎓 **Best for:** New contributors\n\n🤖 AI Usage Policy\n\n- Good First Issues are open for humans, AI bot-authored PRs will be rejected.\n- Refer to our set-up and workflow guides, AI may make mistakes.\n\n> [!WARNING]\n> We expect pull requests to use our workflow and meet the quality standards outlined in this issue.\n\n\n### 📋 Step-by-Step Setup Procedure\n\n- [ ] Visual Studio (VS) Code: [Guide](https://github.com/hiero-ledger/sdk-collaboration-hub/blob/main/guides/issue-progression/for-developers/contributor-setup.md)\n\n- [ ] **OS-Specific Setup:** [Mac](https://github.com/hiero-ledger/hiero-website/blob/main/docs/setup/Macbook_setup.md) | [Windows](https://github.com/hiero-ledger/hiero-website/blob/main/docs/setu",
+      "url": "https://github.com/hiero-ledger/hiero-website/issues/676",
+      "labels": [
+        "Good First Issue"
+      ],
+      "assignees": 0,
+      "comments": 2,
+      "createdAt": "2026-09-25T11:44:26Z",
+      "updatedAt": "2026-10-14T12:39:00Z",
+      "repoLanguage": "TypeScript",
+      "repoTopics": [
+        "hiero",
+        "open-source",
+        "website",
+        "blockchain",
+        "distributed-ledger-technology",
+        "front-end-web-development",
+        "good-first-issue",
+        "good-first-issues",
+        "hedera",
+        "nextjs"
+      ],
+      "repoLastMergedPrAt": null
+    },
+    {
+      "id": "I_kwDOHD2lU8778n-w",
+      "org": "hiero-ledger",
+      "repo": "hiero-sdk-rust",
+      "number": 1262,
+      "title": "[Good First Issue]: Remove stale TODO comments in `PublicKey`",
+      "body": "### 🆕🐥 First-Time Friendly\n\nThis issue is especially welcoming for people who are new to contributing to the **Hiero Rust SDK**.\n\nWe know that opening your first pull request can feel like a big step. Issues labeled **Good First Issue** are designed to make that experience easier, clearer, and more comfortable.\n\nNo prior knowledge of Hiero, Hedera, or distributed ledger technology is required — just a basic familiarity with Rust and Git is more than enough to get started.\n\n> [!IMPORTANT]\n> ### 📋 About Good First Issues\n>\n> Good First Issues are designed to make getting started as smooth and stress-free as possible.\n>\n> They usually focus on:\n> - Small, clearly scoped changes  \n> - Straightforward updates to existing code or docs  \n> - Simple refactors or clarity improvements  \n>\n> Other kinds of contributions — like larger features, deeper technical changes, or design-focused work — are just as valuable and often use the beginner, intermediate, or advanced labels.\n\n### 👾 Description of the Task\n\nAt the very bottom of [`src/key/public_key/mod.rs`](src/key/public_key/mod.rs), there are two TODO comments that no longer reflect the state of the code:\n\n```rust\n// TODO: to_protobuf\n// TODO: verify_transaction\n```\n\nBoth functions have since been implemented in the same file:\n- `to_protobuf` is provided by the `ToProtobuf` trait impl ending just above these lines\n- `verify_transaction` (and `verify_transaction_sources`) is implemented earlier in the file\n\nThese stale comments should be removed to keep the codebase clean and accurate.\n\n**Files to change:**\n- `src/key/public_key/mod.rs`\n\n### 💡 Proposed Approach\n\nDelete the two `// TODO:` comment lines at the bottom of `src/key/public_key/mod.rs`. No code logic changes are required — this is a comment-only cleanup.\n\n### 👩‍💻 Implementation Steps\n\n- [ ] Open `src/key/public_key/mod.rs` in your editor\n- [ ] Navigate to the bottom of the file and locate these two lines:\n  ```rust\n  // TODO: to_protobuf\n  // TODO: verify_transactio",
+      "url": "https://github.com/hiero-ledger/hiero-sdk-rust/issues/1262",
+      "labels": [
+        "Good First Issue"
+      ],
+      "assignees": 0,
+      "comments": 5,
+      "createdAt": "2026-04-08T19:05:36Z",
+      "updatedAt": "2026-08-29T20:05:12Z",
+      "repoLanguage": "Rust",
+      "repoTopics": [
+        "hacktoberfest"
+      ],
+      "repoLastMergedPrAt": null
+    },
+    {
+      "id": "I_kwDOHD2lU88AAAABFHtDSg",
+      "org": "hiero-ledger",
+      "repo": "hiero-sdk-rust",
+      "number": 1308,
+      "title": "Create set_ecdsa_key_with_alias_from_public_key for HSM flows",
+      "body": "### Problem\n\nMissing `set_ecdsa_key_with_alias_from_public_key` implementation.\n\n### Solution\n\nHSM flow — using the new PublicKey overload (Rust example)\n\n```\nlet public_key: PublicKey = hsm_get_public_key(); \nlet response = AccountCreateTransaction::new()\n    .set_ecdsa_key_with_alias_from_public_key(public_key.clone()) \n    .initial_balance(Hbar::new(1))\n    .execute(&client)\n    .await?;\n```\n\n### Alternatives\n\n_No response_",
+      "url": "https://github.com/hiero-ledger/hiero-sdk-rust/issues/1308",
+      "labels": [
+        "enhancement",
+        "Good First Issue",
+        "Beginner"
+      ],
+      "assignees": 0,
+      "comments": 2,
+      "createdAt": "2026-06-11T08:17:52Z",
+      "updatedAt": "2026-08-23T13:17:39Z",
+      "repoLanguage": "Rust",
+      "repoTopics": [
+        "hacktoberfest"
+      ],
+      "repoLastMergedPrAt": null
+    },
+    {
+      "id": "I_kwDOC8OKfc5B8ONm",
+      "org": "hiero-ledger",
+      "repo": "hiero-mirror-node",
+      "number": 3162,
+      "title": "HIP-583 Alias on all transactions",
+      "body": "### Problem\n\nThe first phase of [HIP-583](https://hips.hedera.com/hip/hip-583) Auto Account Creation added alias to crypto transfer transactions only. In the next phase, alias will be added to all transactions that take an `AccountID` as input.\n\n### Solution\n\n* Replace any uses of `EntityId.of(AccountID|ContractID)` that pulled from `TransactionBody` or `TransactionRecord` with `EntityIdService.lookup(AccountID|ContractID)`\n* Deprecate `EntityId.of(AccountID|ContractID)` as we want to ensure the service is used going forward and also because we want to remove protobuf dependencies from common module. Or possibly don't deprecate if there remain a lot of uses not addressed by step one.\n\n### Alternatives\n\n_No response_",
+      "url": "https://github.com/hiero-ledger/hiero-mirror-node/issues/3162",
+      "labels": [
+        "enhancement",
+        "Good First Issue",
+        "parser"
+      ],
+      "assignees": 0,
+      "comments": 4,
+      "createdAt": "2022-01-17T22:26:51Z",
+      "updatedAt": "2026-08-04T21:40:44Z",
+      "repoLanguage": "Java",
+      "repoTopics": [],
+      "repoLastMergedPrAt": null
+    },
+    {
+      "id": "I_kwDOTfck-M8AAAABK-PA-w",
+      "org": "hiero-hackers",
+      "repo": "hiero-x402",
+      "number": 12,
+      "title": "Adversarial test suite: forged receipts must fail verification",
+      "body": "**Level: intermediate · testing/security.** No new features — this hardens the repo's core promise. You need to understand what each receipt panel claims and how its verifier checks it; everything runs offline.\n\n## Why\n\nThe pitch is \"every panel independently verifiable.\" The positive path is proven by the demo; the **negative space** is not yet systematically proven: a forged or tampered receipt must fail verification, every time, for every panel. A mutation suite is the strongest evidence the stamps mean something.\n\n## Where to look\n\nEach panel has a verifier to attack:\n\n- **Settlement** — [`src/verify.ts`](https://github.com/hiero-hackers/hiero-x402/blob/main/src/verify.ts) (`verifySettlement`, `toVerdict`): the `match` judgment against mirror rows.\n- **Delivered content** — [`src/content.ts`](https://github.com/hiero-hackers/hiero-x402/blob/main/src/content.ts): sha-256 of the exact bytes, signed, signer key mirror-checked.\n- **Consent** — the wallet-signed one-time challenge, re-verified against the approver's on-chain key (see the hub's wallet-approval mode and [`src/attestation.ts`](https://github.com/hiero-hackers/hiero-x402/blob/main/src/attestation.ts)).\n- **Block proof** — [`src/stream.ts`](https://github.com/hiero-hackers/hiero-x402/blob/main/src/stream.ts): merkle root recomputed, threshold signature verified (`npm run provenance` path).\n\nTests live in `test/` (vitest); mirror responses are injectable via `fetchImpl`, the block source via `BlockSource` — no network needed.\n\n## What to do\n\nBuild a tamper matrix: for each panel, enumerate single-field mutations and assert the verifier rejects (or downgrades) every one. Minimum set:\n\n| Panel | Mutations that must fail |\n| --- | --- |\n| Settlement | amount off by **one tinybar** (over and under) · wrong recipient · wrong transaction id · mirror row for a different transfer |\n| Content | one flipped byte in the body (hash mismatch) · valid hash, wrong signer key · valid signer, signature over different bytes",
+      "url": "https://github.com/hiero-hackers/hiero-x402/issues/12",
+      "labels": [
+        "help wanted",
+        "intermediate",
+        "testing",
+        "security"
+      ],
+      "assignees": 0,
+      "comments": 0,
+      "createdAt": "2026-07-31T16:06:09Z",
+      "updatedAt": "2026-07-31T16:10:39Z",
+      "repoLanguage": "TypeScript",
+      "repoTopics": [
+        "agentic-payments",
+        "hedera",
+        "hedera-consensus-service",
+        "hiero",
+        "http-402",
+        "micropayments",
+        "receipts",
+        "usdc",
+        "x402",
+        "contributors-welcome"
+      ],
+      "repoLastMergedPrAt": null
+    },
+    {
+      "id": "I_kwDOTfck-M8AAAABK-OzUg",
+      "org": "hiero-hackers",
+      "repo": "hiero-x402",
+      "number": 11,
+      "title": "Hub: show a running spend total against the cap",
+      "body": "**Level: beginner · good first issue.** Front-end only — one file, no library changes, no funded accounts needed to develop (run the demo in mock mode).\n\n## Why\n\nThe hub's human gate shows the terms of the *next* payment, and a **max spend** cap filters quotes — but there's no running total. A human approving the fifth request of a session has no on-screen answer to \"how much has this agent already spent?\" Adding a cumulative display makes the consent decision informed, not just per-transaction.\n\n## Where to look\n\nEverything is in [`demo/hub.ts`](https://github.com/hiero-hackers/hiero-x402/blob/main/demo/hub.ts) — the hub is a single self-contained page:\n\n- The cap input is `#max-payment` (~line 640), denominated in the chosen asset (`data-asset`, `data-decimals` on the picker — the label already switches between ℏ and USDC, ~line 600).\n- The run stream narrates each settlement (the `charged: quoted … → settled …` line) — that's where the settled amount and asset are available to accumulate.\n\n## What to do\n\n1. Accumulate settled amounts client-side as runs complete, **per asset** — an ℏ total and a USDC total must never be summed into one number (they're different units; keep them as separate atomic-unit tallies, formatted with each asset's decimals).\n2. Display \"spent this session\" near the max-spend control; when a cap is set for the currently selected asset, show it as `spent / cap`.\n3. Reset the tally on page reload is fine (session = page session); say so in the UI label.\n\n## Acceptance criteria\n\n- [ ] Running total visible on the hub, updating after each settled run\n- [ ] Per-asset tallies — switching the pay-for picker shows the matching asset's total\n- [ ] Refused/declined runs add nothing (nothing was signed, nothing was spent)\n- [ ] `npm run verify` passes (see [CONTRIBUTING.md](https://github.com/hiero-hackers/hiero-x402/blob/main/CONTRIBUTING.md))\n\nNice-to-have, not required: a small warning style when the session total plus the next quote would exceed t",
+      "url": "https://github.com/hiero-hackers/hiero-x402/issues/11",
+      "labels": [
+        "enhancement",
+        "good first issue",
+        "beginner",
+        "ux"
+      ],
+      "assignees": 0,
+      "comments": 0,
+      "createdAt": "2026-07-31T16:05:44Z",
+      "updatedAt": "2026-07-31T16:10:36Z",
+      "repoLanguage": "TypeScript",
+      "repoTopics": [
+        "agentic-payments",
+        "hedera",
+        "hedera-consensus-service",
+        "hiero",
+        "http-402",
+        "micropayments",
+        "receipts",
+        "usdc",
+        "x402",
+        "contributors-welcome"
+      ],
+      "repoLastMergedPrAt": null
+    },
+    {
+      "id": "I_kwDOTfck-M8AAAABK-OpQQ",
+      "org": "hiero-hackers",
+      "repo": "hiero-x402",
+      "number": 10,
+      "title": "Receipt JSON export alongside HTML",
+      "body": "**Level: beginner · good first issue.** Self-contained, no network or funded accounts needed — the whole task runs offline against existing test fixtures.\n\n## Why\n\nEvery paid run writes `receipt.html` — great for humans, opaque for machines. Agents that make many paid requests need to store, index, and re-verify receipts programmatically. A JSON export with a stable schema makes the receipt a data artifact, not just a page.\n\n## Where to look\n\n- [`src/receipt.ts`](https://github.com/hiero-hackers/hiero-x402/blob/main/src/receipt.ts) — `settlementReceiptHTML(...)` builds the HTML from a `SettlementVerdict` plus `ReceiptOptions` (delivered content, consent, proof panels). The JSON export consumes the **same inputs**; no new data is gathered.\n- [`src/verify.ts`](https://github.com/hiero-hackers/hiero-x402/blob/main/src/verify.ts) — `SettlementVerdict` (fulfilment, request, receipts, transactionId, hashscanUrl, mirrorUrl) is most of the payload already.\n- [`src/index.ts`](https://github.com/hiero-hackers/hiero-x402/blob/main/src/index.ts) — the public barrel; export the new function here.\n- `test/` — see how the existing receipt tests build a verdict fixture; reuse it.\n\n## What to do\n\n1. Add `settlementReceiptJSON(verdict, options)` next to `settlementReceiptHTML`, returning a plain serializable object (not a string) with the same panels: settlement, delivered content, consent, proof — each carrying its trust stamp exactly as the HTML does (`UNVERIFIED` / `SERVER COMMITTED` / `VERIFIED` are claims, so they must survive the format change unchanged).\n2. Include a top-level `schemaVersion: 1` so the format can evolve.\n3. Export it from `src/index.ts`.\n4. Document the schema in `docs/receipt-schema.md` (field-by-field, one line each).\n5. Optionally: have the demo agent ([`demo/agent.ts`](https://github.com/hiero-hackers/hiero-x402/blob/main/demo/agent.ts)) write `receipt.json` beside `receipt.html`.\n\n## Acceptance criteria\n\n- [ ] `settlementReceiptJSON` exported from the bar",
+      "url": "https://github.com/hiero-hackers/hiero-x402/issues/10",
+      "labels": [
+        "enhancement",
+        "good first issue",
+        "beginner"
+      ],
+      "assignees": 0,
+      "comments": 0,
+      "createdAt": "2026-07-31T16:05:23Z",
+      "updatedAt": "2026-07-31T16:10:34Z",
+      "repoLanguage": "TypeScript",
+      "repoTopics": [
+        "agentic-payments",
+        "hedera",
+        "hedera-consensus-service",
+        "hiero",
+        "http-402",
+        "micropayments",
+        "receipts",
+        "usdc",
+        "x402",
+        "contributors-welcome"
+      ],
+      "repoLastMergedPrAt": null
+    },
+    {
+      "id": "I_kwDOTfck-M8AAAABK-N2lw",
+      "org": "hiero-hackers",
+      "repo": "hiero-x402",
+      "number": 8,
+      "title": "Support any HTS token beyond testnet USDC and HBAR",
+      "body": "**Level: advanced.** Cross-cutting design work: the quote scheme, the verifier, the spend policy, the receipt, and the hub all touch asset identity. Worth a short design comment in this thread before code.\n\n## Why\n\nThe pay-for picker offers HBAR and testnet USDC today. The scheme already generalizes — asset `0.0.0` means HBAR in tinybars, anything else is an HTS token id in its smallest unit ([`src/requirements.ts`](https://github.com/hiero-hackers/hiero-x402/blob/main/src/requirements.ts)) — but the demo and several safety checks are specialized to the two known assets. Generalizing to *any* HTS token makes the repo a template for real paid APIs, not a two-asset demo.\n\n## Where it touches\n\n- **Quote side** — [`demo/server.ts`](https://github.com/hiero-hackers/hiero-x402/blob/main/demo/server.ts) / [`demo/shared.ts`](https://github.com/hiero-hackers/hiero-x402/blob/main/demo/shared.ts): a config surface for the server to advertise accepted assets (token id, decimals, display symbol) instead of the hardcoded pair.\n- **Decimals** — currently known a priori (8 for ℏ, 6 for USDC). For arbitrary tokens, decimals must come from the mirror (`/api/v1/tokens/{id}`) and be treated as **verification input, not display trivia**: an amount judged with the wrong decimals is exactly the off-by-10^n bug the exact-amount guarantee exists to prevent.\n- **Association** — the recipient (and the agent, for change/refund paths) must be associated with the token; auto-association may or may not cover it. Decide: pre-flight check with a clear refusal, vs. letting settlement fail and reporting honestly.\n- **Spend cap** — [`demo/policy.ts`](https://github.com/hiero-hackers/hiero-x402/blob/main/demo/policy.ts) + the hub's cap input: the cap is denominated in the quote's asset. With N assets, per-asset caps (the current model, generalized) are simpler and more honest than any cross-asset conversion — recommend keeping caps strictly per-asset and refusing quotes in assets with no cap configured",
+      "url": "https://github.com/hiero-hackers/hiero-x402/issues/8",
+      "labels": [
+        "enhancement",
+        "help wanted",
+        "advanced"
+      ],
+      "assignees": 0,
+      "comments": 0,
+      "createdAt": "2026-07-31T16:03:42Z",
+      "updatedAt": "2026-07-31T16:10:30Z",
+      "repoLanguage": "TypeScript",
+      "repoTopics": [
+        "agentic-payments",
+        "hedera",
+        "hedera-consensus-service",
+        "hiero",
+        "http-402",
+        "micropayments",
+        "receipts",
+        "usdc",
+        "x402",
+        "contributors-welcome"
+      ],
+      "repoLastMergedPrAt": null
+    },
+    {
+      "id": "I_kwDOD5sxF87UphDq",
+      "org": "hiero-ledger",
+      "repo": "hiero-consensus-node",
+      "number": 21922,
+      "title": "Add parameterized type to SchemaRegistry in Service interface",
+      "body": "## Summary\n\nThe `Service` interface should use `SchemaRegistry<SemanticVersion>` instead of raw `SchemaRegistry` type to provide type safety when registering schemas.\n\n## Current Situation\n\nCurrently, the `Service` interface uses a raw `SchemaRegistry` type:\n\n```java\npublic interface Service {\n    /**\n     * Registers the schemas this application state really uses with the given {@link SchemaRegistry}.\n     *\n     * @param registry the registry to register the schemas with\n     */\n    void registerSchemas(@NonNull SchemaRegistry registry);\n}\n```\n\nHowever, `SchemaRegistry` is a generic type that should be parameterized with a version type:\n\n```java\npublic interface SchemaRegistry<V> {\n    SchemaRegistry<V> register(@NonNull Schema<V> schema);\n}\n```\n\nUsing the raw type creates a type safety issue where there's no compile-time verification that schemas being registered match the expected version type.\n\n## Proposed Solution\n\nChange the `Service` interface to use the parameterized type:\n\n```java\npublic interface Service {\n    /**\n     * Registers the schemas this application state really uses with the given {@link SchemaRegistry}.\n     *\n     * @param registry the registry to register the schemas with\n     */\n    void registerSchemas(@NonNull SchemaRegistry<SemanticVersion> registry);\n}\n```\n\n## Benefits\n\n1. **Type Safety**: Compile-time verification that all schemas use `SemanticVersion`\n2. **Better IDE Support**: Auto-completion and type inference work correctly\n3. **Consistency**: All Hedera services use `SemanticVersion` for schema versioning\n4. **Catches Errors Early**: Prevents accidentally using wrong version type\n\n## Related Code\n\n- `Service` interface: `platform-sdk/swirlds-state-api/src/main/java/com/swirlds/state/lifecycle/Service.java` (line 43)\n- `SchemaRegistry` interface: `platform-sdk/swirlds-state-api/src/main/java/com/swirlds/state/lifecycle/SchemaRegistry.java`\n- `SemanticVersion`: `hapi/hedera-protobufs/services/basic_types.proto`\n\n## Migration Notes\n\n",
+      "url": "https://github.com/hiero-ledger/hiero-consensus-node/issues/21922",
+      "labels": [
+        "Good First Issue"
+      ],
+      "assignees": 0,
+      "comments": 4,
+      "createdAt": "2025-10-29T20:01:42Z",
+      "updatedAt": "2026-07-31T09:43:19Z",
+      "repoLanguage": "Java",
+      "repoTopics": [
+        "hacktoberfest"
+      ],
+      "repoLastMergedPrAt": null
+    },
+    {
+      "id": "I_kwDOTYhsuM8AAAABIzZYTQ",
+      "org": "hiero-hackers",
+      "repo": "hiero-journal-rs",
+      "number": 4,
+      "title": "bug: fix ci",
+      "body": "Our ci is having some failed runs\nhttps://github.com/hiero-hackers/hiero-journal-rs/actions/runs/29355245631\n\nIt would be great if someone wants to solve it",
+      "url": "https://github.com/hiero-hackers/hiero-journal-rs/issues/4",
+      "labels": [
+        "good first issue"
+      ],
+      "assignees": 0,
+      "comments": 0,
+      "createdAt": "2026-07-14T17:59:45Z",
+      "updatedAt": "2026-07-14T17:59:54Z",
+      "repoLanguage": "Rust",
+      "repoTopics": [
+        "accounting",
+        "audit",
+        "blockchain",
+        "hedera",
+        "hiero",
+        "contributors-welcome"
+      ],
+      "repoLastMergedPrAt": null
+    },
+    {
+      "id": "I_kwDOTYhsuM8AAAABIzV44g",
+      "org": "hiero-hackers",
+      "repo": "hiero-journal-rs",
+      "number": 2,
+      "title": "Add a failed-transaction fixture and test",
+      "body": "Why: [docs/TESTING.md](https://github.com/hiero-hackers/hiero-journal-rs/blob/main/docs/TESTING.md) flags that a failed transaction (one that still charged a fee) isn't in the fixtures. The journal keeps failed txns and books only their fee legs — that behavior is currently unverified.\n\n\nTasks: Add a record/block fixture containing a transaction with result_code != 22 that charged a fee; add a test asserting it produces a Fee posting and conservation still holds; tick it off in TESTING.md.\n\n\nAcceptance: new test passes; the coverage gap is closed in the docs.",
+      "url": "https://github.com/hiero-hackers/hiero-journal-rs/issues/2",
+      "labels": [
+        "good first issue"
+      ],
+      "assignees": 0,
+      "comments": 0,
+      "createdAt": "2026-07-14T17:51:38Z",
+      "updatedAt": "2026-07-14T17:51:38Z",
+      "repoLanguage": "Rust",
+      "repoTopics": [
+        "accounting",
+        "audit",
+        "blockchain",
+        "hedera",
+        "hiero",
+        "contributors-welcome"
+      ],
+      "repoLastMergedPrAt": null
+    },
+    {
+      "id": "I_kwDOTYhsuM8AAAABIzVj7w",
+      "org": "hiero-hackers",
+      "repo": "hiero-journal-rs",
+      "number": 1,
+      "title": "feat: Expose the assurance report and CSV sub-ledger via the CLI",
+      "body": "Why: \nreport::AssuranceReport::to_html and report::subledger_csv are library functions today, only reachable through the examples. Users shouldn't have to write Rust to get a report.\n\nTasks: Add two CLI subcommands in [src/main.rs](https://github.com/hiero-hackers/hiero-journal-rs/blob/main/src/main.rs): report --dir <dir> --genesis <0.blk.gz> [--out file.html] and export --dir <dir> --account <id> (CSV to stdout). Reuse the existing load_journal / from_block_dir_attested helpers; update the usage text and README CLI section.\n\n\nAcceptance: \nboth subcommands produce the same output as the corresponding examples; fmt/clippy/test stay green.",
+      "url": "https://github.com/hiero-hackers/hiero-journal-rs/issues/1",
+      "labels": [
+        "good first issue"
+      ],
+      "assignees": 0,
+      "comments": 0,
+      "createdAt": "2026-07-14T17:50:50Z",
+      "updatedAt": "2026-07-14T17:50:50Z",
+      "repoLanguage": "Rust",
+      "repoTopics": [
+        "accounting",
+        "audit",
+        "blockchain",
+        "hedera",
+        "hiero",
+        "contributors-welcome"
+      ],
+      "repoLastMergedPrAt": null
+    },
+    {
+      "id": "I_kwDOD5sxF86ycfqR",
+      "org": "hiero-ledger",
+      "repo": "hiero-consensus-node",
+      "number": 18833,
+      "title": "Refactor setter methods in `TestingEventBuilder`",
+      "body": "## 🆕🐥 First Timers Only\n\nThis issue is reserved for people who have never contributed to [Hedera](https://hedera.com) or any open source project in general.\nWe know that creating a pull request (PR) is a major barrier for new contributors.\nThe goal of this issue and all other issues labeled by [**'good first issue'**](https://github.com/issues?q=is%3Aopen+is%3Aissue+org%3Ahashgraph+archived%3Afalse+label%3A%22good+first+issue%22+) is to help you make your first contribution to Hedera.\n\n## 👾 Description of the issue\n\nThe `TestingEventBuilder` class has many setter methods that return `this`. Such methods are usually named `withThisValue()` instead of `setThisValue()` because methods that start with `set` should be simple void setters. This ticket is to refactor all `set` methods in `TestingEventBuilder` to `with` methods.\n\n### Steps to reproduce\n\nSee the `TestingEventBuilder.java` class. Observe the set methods that return `this`.\n\n### Proposed Solution:\n\nRefactor the `set` methods to `with`. Example: `setTimeCreated(...)` should be refactored to `withTimeCreated(...)`. All other aspects of the method definition should remain unchanged.\n\n## 📋 Step by step guide to do a contribution\n\nIf you have never contributed to an open source project at GitHub, the following step-by-step guide will introduce you to the workflow. More information and concrete samples for shell commands for each step can be found in our [CONTRIBUTING.md](https://github.com/hashgraph/.github/blob/main/CONTRIBUTING.md) file.\nA more detailed general documentation of the GitHub PR workflow can be found [here](https://github.com/firstcontributions/first-contributions/blob/master/README.md).\n\n- [ ] **Claim this issue:** Comment below that you are interested in working on the issue\n- [ ] **Wait for assignment:** A community member with the given rights will add you as an assignee of the issue\n- [ ] **Fork the repository:** You can do that in GitHub (by simply clicking the 'fork' button).\n- [ ] **Check out",
+      "url": "https://github.com/hiero-ledger/hiero-consensus-node/issues/18833",
+      "labels": [
+        "Good First Issue",
+        "Tech Debt Reduced"
+      ],
+      "assignees": 0,
+      "comments": 12,
+      "createdAt": "2025-04-14T18:16:49Z",
+      "updatedAt": "2026-07-07T20:18:04Z",
+      "repoLanguage": "Java",
+      "repoTopics": [
+        "hacktoberfest"
+      ],
+      "repoLastMergedPrAt": null
+    },
+    {
+      "id": "I_kwDOD9Tuvs52ZOkm",
+      "org": "hiero-ledger",
+      "repo": "hiero-docs",
+      "number": 494,
+      "title": "Note that network throttles are global and not set per account",
+      "body": "## 🆕🐥 First Timers Only\n\nThis issue is reserved for people who have never contributed to [Hiero](https://hiero.org) or any open source project in general.\nWe know that creating a pull request (PR) is a major barrier for new contributors.\nThe goal of this issue and all other issues labeled by [**'good first issue'**](https://github.com/issues?q=is%3Aopen+is%3Aissue+org%3Ahiero-ledger+archived%3Afalse+label%3A%22good+first+issue%22+) is to help you make your first contribution to Hiero.\n\n## 👾 Description of the issue\n\nIn our [documentation](https://docs.hedera.com/hedera/networks/mainnet), we didn’t emphasize clearly enough that the applied throttles are per network and cannot be applied per account\n\n## 💡 Solution\n\nImprove the documentation by emphasizing that throttles always apply to the entire network and cannot be applied to a specific account or group of accounts.\n\n## 📋 Step by step guide to do a contribution\n\nIf you have never contributed to an open source project at GitHub, the following step-by-step guide will introduce you to the workflow.\nMore information and concrete samples for shell commands for each step can be found in our [CONTRIBUTING.md](https://github.com/hiero-ledger/.github/blob/main/CONTRIBUTING.md) file.\nA more detailed general documentation of the GitHub PR workflow can be found [here](https://github.com/firstcontributions/first-contributions/blob/master/README.md).\n\n- [ ] **Claim this issue:** Comment below that you are interested in working on the issue\n- [ ] **Wait for assignment:** A community member with the given rights will add you as an assignee of the issue\n- [ ] **Work on the issue:** Follow the detailed description in our [CONTRIBUTING.md](https://github.com/hiero-ledger/.github/blob/main/CONTRIBUTING.md) file.\n- [ ] **You did it 🎉:** We will merge the fix in the main branch. Thanks for being part of the Hiero community as an open-source contributor ❤️\n\n## 🎉 Contribute to Hacktoberfest\n\nAt the time of the [Hacktoberfest](https://hack",
+      "url": "https://github.com/hiero-ledger/hiero-docs/issues/494",
+      "labels": [
+        "enhancement",
+        "good first issue",
+        "hacktoberfest"
+      ],
+      "assignees": 0,
+      "comments": 2,
+      "createdAt": "2023-11-09T20:07:49Z",
+      "updatedAt": "2026-05-05T09:40:10Z",
+      "repoLanguage": "Shell",
+      "repoTopics": [
+        "hacktoberfest"
+      ],
+      "repoLastMergedPrAt": null
+    },
+    {
+      "id": "I_kwDOD9Tuvs6cwT7s",
+      "org": "hiero-ledger",
+      "repo": "hiero-docs",
+      "number": 814,
+      "title": "docs: add Linux Foundation Decentralized Trust (LFDT) to the document documentation glossary",
+      "body": "## 🆕🐥 First Timers Only\nThis issue is reserved for people who have never contributed to [Hiero](https://hiero.org/) or any open source project in general. We know that creating a pull request (PR) is a major barrier for new contributors. The goal of this issue and all other issues labeled by ['Good First Issue'](https://github.com/issues?q=is%3Aopen+is%3Aissue+org%3Ahashgraph+archived%3Afalse+label%3A%22Good+First+Issue%22+) is to help you make your first contribution to Hiero.\n\n## 👾 Description of the issue\nThe glossary is missing some important terms\n\n## ✅ Proposed Solution \n\n**1. Define these terms** \n- [ ] Linux Foundation Decentralized Trust (LFDT)\n- [ ] [Linux Foundation ](https://www.linuxfoundation.org/)\n\n**2. add the defined terms to the [glossary](https://docs.hedera.com/hedera/support-and-community/glossary) in alphabetical order.**\n\n## 📋 Step-by-step guide to Contribute to Hiero\n\nIf you have never contributed to an open-source project at GitHub, the following step-by-step instructions will##  introduce you to the workflow. \n- [ ] **Claim this issue**: Comment below that you are interested in working on the issue\n- [ ]  **Wait for assignment**: A community member with the given rights will add you as an assignee of the issue\n- [ ]  **Fork the repository**: You can do that in GitHub (by simply clicking the 'fork' button).\n- [ ]  **Check out the forked repository**\n- [ ]  **Create a feature branch** for the issue. We do not have a hard naming definition for branches but it is best practice to prefix the branch name with the issue id.\n- [ ] **Solve the issu**e in your branch.\n- [ ] **Commit your changes**: Here, it is needed to add sign-off information to the commit to accept the \"Developer Certificate of Origin\" (https://developercertificate.org/). More details can be found in our [CONTRIBUTING.md](https://github.com/hashgraph/.github/blob/main/CONTRIBUTING.md)\n- [ ] **Start a Pull Request (PR)**: We have a pattern for naming pull requests that a GitHub Act",
+      "url": "https://github.com/hiero-ledger/hiero-docs/issues/814",
+      "labels": [
+        "documentation",
+        "good first issue"
+      ],
+      "assignees": 0,
+      "comments": 2,
+      "createdAt": "2024-11-01T21:37:01Z",
+      "updatedAt": "2026-05-05T09:38:46Z",
+      "repoLanguage": "Shell",
+      "repoTopics": [
+        "hacktoberfest"
+      ],
+      "repoLastMergedPrAt": null
+    },
+    {
+      "id": "I_kwDOPWwaWc7QucJy",
+      "org": "hiero-ledger",
+      "repo": "hiero-did-sdk-js",
+      "number": 31,
+      "title": "Create class diagrams for utility packages",
+      "body": "## 🆕🐥 First Timers Only\n\nThis issue is reserved for people who have never contributed to [Hiero](https://hiero.org) or any open source project in general.\nWe know that creating a pull request (PR) is a major barrier for new contributors.\nThe goal of this issue and all other issues labeled by [**'good first issue'**](https://github.com/issues?q=is%3Aopen+is%3Aissue+org%3Ahiero-ledger+archived%3Afalse+label%3A%22good+first+issue%22+) is to help you make your first contribution to Hiero.\n\n## 👾 Description of the issue\n\nDocumentation consistency can be improved by introducing class diagrams for recently added packages.\n\n## 💡 Solution\n\nThis issue suggests to work on diagrams for utility packages - Client, Cache, Zstd and Crypto.\n\n### 👩‍💻 Implementation\n\n- Take a look at existing API reference documentation\n  - Classes from Client, Cache, Zstd and Crypto packages\n    - [Client](https://github.com/hiero-ledger/hiero-did-sdk-js/blob/main/docs/modules/ROOT/pages/03-implementation/components/client-api.adoc)\n    - [Cache](https://github.com/hiero-ledger/hiero-did-sdk-js/blob/main/docs/modules/ROOT/pages/03-implementation/components/cache-api.adoc)\n    - [Zstd](https://github.com/hiero-ledger/hiero-did-sdk-js/blob/main/docs/modules/ROOT/pages/03-implementation/components/zstd-api.adoc)\n    - [Crypto](https://github.com/hiero-ledger/hiero-did-sdk-js/blob/main/docs/modules/ROOT/pages/03-implementation/components/crypto-api.adoc)\n  - Examples of documentation with class diagrams\n    - [Signer](https://github.com/hiero-ledger/hiero-did-sdk-js/blob/main/docs/modules/ROOT/pages/03-implementation/components/signer-api.adoc)\n    - [Publisher](https://github.com/hiero-ledger/hiero-did-sdk-js/blob/main/docs/modules/ROOT/pages/03-implementation/components/verifier-api.adoc)\n- Create class diagrams for Client, Cache, Zstd and Crypto package interfaces/classes and add them on corresponding API reference pages (using existing documentation as general example)\n\n## 📋 Step by step guide to do ",
+      "url": "https://github.com/hiero-ledger/hiero-did-sdk-js/issues/31",
+      "labels": [
+        "documentation",
+        "enhancement",
+        "Good First Issue",
+        "Non-Code"
+      ],
+      "assignees": 0,
+      "comments": 7,
+      "createdAt": "2025-10-10T08:08:00Z",
+      "updatedAt": "2026-04-28T18:20:52Z",
+      "repoLanguage": "TypeScript",
+      "repoTopics": [
+        "hacktoberfest"
+      ],
+      "repoLastMergedPrAt": null
+    },
+    {
+      "id": "I_kwDOPWwaWc7Que6e",
+      "org": "hiero-ledger",
+      "repo": "hiero-did-sdk-js",
+      "number": 32,
+      "title": "Create class diagrams for AnonCreds package",
+      "body": "## 🆕🐥 First Timers Only\n\nThis issue is reserved for people who have never contributed to [Hiero](https://hiero.org) or any open source project in general.\nWe know that creating a pull request (PR) is a major barrier for new contributors.\nThe goal of this issue and all other issues labeled by [**'good first issue'**](https://github.com/issues?q=is%3Aopen+is%3Aissue+org%3Ahiero-ledger+archived%3Afalse+label%3A%22good+first+issue%22+) is to help you make your first contribution to Hiero.\n\n## 👾 Description of the issue\n\nDocumentation consistency can be improved by introducing class diagrams for recently added packages.\n\n## 💡 Solution\n\nThis issue suggests to work on diagrams for AnonCreds package.\n\n### 👩‍💻 Implementation\n\n- Take a look at existing API reference documentation\n  - [Hedera AnonCreds Registry](https://github.com/hiero-ledger/hiero-did-sdk-js/blob/main/docs/modules/ROOT/pages/03-implementation/components/anoncreds-api.adoc)\n  - Examples of documentation with class diagrams\n    - [Signer](https://github.com/hiero-ledger/hiero-did-sdk-js/blob/main/docs/modules/ROOT/pages/03-implementation/components/signer-api.adoc)\n    - [Publisher](https://github.com/hiero-ledger/hiero-did-sdk-js/blob/main/docs/modules/ROOT/pages/03-implementation/components/verifier-api.adoc)\n- Create class diagrams for AnonCreds package classes and add them on corresponding API reference pages (using existing documentation as general example)\n\n## 📋 Step by step guide to do a contribution\n\nIf you have never contributed to an open source project at GitHub, the following step-by-step guide will introduce you to the workflow.\nMore information and concrete samples for shell commands for each step can be found in our [CONTRIBUTING.md](https://github.com/hiero-ledger/.github/blob/main/CONTRIBUTING.md) file.\nA more detailed general documentation of the GitHub PR workflow can be found [here](https://github.com/firstcontributions/first-contributions/blob/master/README.md).\n\n- [ ] **Claim this issue:*",
+      "url": "https://github.com/hiero-ledger/hiero-did-sdk-js/issues/32",
+      "labels": [
+        "documentation",
+        "enhancement",
+        "Good First Issue",
+        "Non-Code"
+      ],
+      "assignees": 0,
+      "comments": 4,
+      "createdAt": "2025-10-10T08:12:00Z",
+      "updatedAt": "2026-04-28T18:20:51Z",
+      "repoLanguage": "TypeScript",
+      "repoTopics": [
+        "hacktoberfest"
+      ],
+      "repoLastMergedPrAt": null
+    },
+    {
+      "id": "I_kwDOPWwaWc7QuPvU",
+      "org": "hiero-ledger",
+      "repo": "hiero-did-sdk-js",
+      "number": 30,
+      "title": "Create class diagrams for HCS integration package",
+      "body": "## 🆕🐥 First Timers Only\n\nThis issue is reserved for people who have never contributed to [Hiero](https://hiero.org) or any open source project in general.\nWe know that creating a pull request (PR) is a major barrier for new contributors.\nThe goal of this issue and all other issues labeled by [**'good first issue'**](https://github.com/issues?q=is%3Aopen+is%3Aissue+org%3Ahiero-ledger+archived%3Afalse+label%3A%22good+first+issue%22+) is to help you make your first contribution to Hiero.\n\n## 👾 Description of the issue\n\nDocumentation consistency can be improved by introducing class diagrams for recently added packages.\n\n## 💡 Solution\n\nThis issue suggests to work on diagrams for HCS integration package classes.\n\n### 👩‍💻 Implementation\n\n- Take a look at existing API reference documentation\n  - Classes from HCS integration package\n    - [HCSService](https://github.com/hiero-ledger/hiero-did-sdk-js/blob/main/docs/modules/ROOT/pages/03-implementation/components/hcs-service-api.adoc)\n    - [HCSMessageService](http://github.com/hiero-ledger/hiero-did-sdk-js/blob/main/docs/modules/ROOT/pages/03-implementation/components/hcs-message-service-api.adoc)\n    - [HCSFileService](https://github.com/hiero-ledger/hiero-did-sdk-js/blob/main/docs/modules/ROOT/pages/03-implementation/components/hcs-file-service-api.adoc)\n    - [HCSTopicService](https://github.com/hiero-ledger/hiero-did-sdk-js/blob/main/docs/modules/ROOT/pages/03-implementation/components/hcs-topic-service-api.adoc)\n    - [HCSCacheService](https://github.com/hiero-ledger/hiero-did-sdk-js/blob/main/docs/modules/ROOT/pages/03-implementation/components/hcs-cache-service-api.adoc)\n  - Examples of documentation with class diagrams\n    - [Signer](https://github.com/hiero-ledger/hiero-did-sdk-js/blob/main/docs/modules/ROOT/pages/03-implementation/components/signer-api.adoc)\n    - [Publisher](https://github.com/hiero-ledger/hiero-did-sdk-js/blob/main/docs/modules/ROOT/pages/03-implementation/components/verifier-api.adoc)\n- Create cl",
+      "url": "https://github.com/hiero-ledger/hiero-did-sdk-js/issues/30",
+      "labels": [
+        "documentation",
+        "enhancement",
+        "Good First Issue",
+        "Non-Code"
+      ],
+      "assignees": 0,
+      "comments": 5,
+      "createdAt": "2025-10-10T07:51:01Z",
+      "updatedAt": "2026-04-18T20:01:54Z",
+      "repoLanguage": "TypeScript",
+      "repoTopics": [
+        "hacktoberfest"
+      ],
+      "repoLastMergedPrAt": null
+    },
+    {
+      "id": "I_kwDORZporc8AAAABZmw4gA",
+      "org": "hiero-hackers",
+      "repo": "analytics",
+      "number": 604,
+      "title": "Bump sdk-automations to recent release",
+      "body": "<!-- Everything outside \"The task\" is boilerplate — leave it, or trim what doesn't apply. -->\n\n> 🐥 **Good First Issue** — a small, well-contained change designed for first-time contributors.\n> **Time:** ~4 hours including setup · **Prerequisites:** none — beginner programming is enough. No Hiero, Hedera, or data-science background needed.\n> Setup takes minutes: see the [contributor guide](https://github.com/hiero-hackers/analytics/blob/main/CONTRIBUTING.md#setup).\n\n## The task\nWe need to bump the release tag at [https://github.com/hiero-hackers/analytics/blob/main/sdk-automations.yml\nfrom](https://github.com/hiero-hackers/analytics/blob/main/.github/workflows/sdk-automations.yml) from\n      - uses: hiero-hackers/sdk-automations@6c81ab1ed114117740e5b9d3c3514c09ca83c802 # v0.1.1\nto the recent release\nv0.1.2 \nhttps://github.com/hiero-hackers/sdk-automations/tags\nWhich should be released shortly.\n\nWe need to make sure to copy the exact commit SHA\n\n\n\n## How to work on this\n\n1. **Claim it:** comment `/assign` and wait to be assigned — unassigned PRs are closed automatically.\n2. **Get a plan:** once assigned, comment `@coderabbitai plan` for a draft implementation plan. It's a starting point, not a spec — checking it against the real code is part of the task.\n3. **Set up and solve it** with the [setup](https://github.com/hiero-hackers/analytics/blob/main/CONTRIBUTING.md#setup) and [workflow](https://github.com/hiero-hackers/analytics/blob/main/CONTRIBUTING.md#workflow) guides. Ask questions early, on this issue or [Discord](https://github.com/hiero-ledger/sdk-collaboration-hub/tree/main/guides/issue-progression/for-developers/discord.md).\n\n**🤖 AI:** tools are welcome; verified work is required. You must have run the code and tests yourself, be able to explain every line, and have read the files above with your own eyes — see the [AI policy](https://github.com/hiero-hackers/analytics/blob/main/CONTRIBUTING.md#ai-policy). Fully automated bot PRs are closed.\n\n**Before opening",
+      "url": "https://github.com/hiero-hackers/analytics/issues/604",
+      "labels": [
+        "good first issue"
+      ],
+      "assignees": 1,
+      "comments": 3,
+      "createdAt": "2026-10-24T13:16:27Z",
+      "updatedAt": "2026-10-26T09:18:48Z",
+      "repoLanguage": "Python",
+      "repoTopics": [
+        "data-analytics",
+        "data-engineering",
+        "data-science",
+        "data-structures",
+        "data-visualization",
+        "github-api",
+        "good-first-issue",
+        "hiero",
+        "supervised-machine-learning",
+        "new-contributors-welcome"
+      ],
+      "repoLastMergedPrAt": null
+    },
+    {
+      "id": "I_kwDOLMTWdc8AAAABOfRijA",
+      "org": "hiero-ledger",
+      "repo": "solo",
+      "number": 5910,
+      "title": "OpenSSF — **Branch-Protection** improvements",
+      "body": "",
+      "url": "https://github.com/hiero-ledger/solo/issues/5910",
+      "labels": [
+        "P2-⏭️💎",
+        "Good First Issue"
+      ],
+      "assignees": 2,
+      "comments": 4,
+      "createdAt": "2026-08-27T12:02:54Z",
+      "updatedAt": "2026-10-25T14:02:52Z",
+      "repoLanguage": "TypeScript",
+      "repoTopics": [
+        "hacktoberfest"
+      ],
+      "repoLastMergedPrAt": null
+    },
+    {
+      "id": "I_kwDOM9xBhM8AAAABXWkQPw",
+      "org": "hiero-ledger",
+      "repo": "hiero-sdk-python",
+      "number": 2730,
+      "title": "docs: Fix outdated docstring for `Transaction._from_protobuf`",
+      "body": "### 🆕🐥 Newcomer Friendly\n\nWelcome! This is a **[Good First Issue](https://github.com/issues?q=is%3Aopen%20is%3Aissue%20org%3Ahiero-ledger%20archived%3Afalse%20no%3Aassignee%20(label%3A%22good%20first%20issue%22%20OR%20label%3A%22skill%3A%20good%20first%20issue%22)%20(repo%3Ahiero-ledger%2Fhiero-sdk-cpp%20OR%20repo%3Ahiero-ledger%2Fhiero-sdk-swift%20OR%20repo%3Ahiero-ledger%2Fhiero-sdk-python%20OR%20repo%3Ahiero-ledger%2Fhiero-sdk-js%20OR%20repo%3Ahiero-ledger%2Fhiero-website))** designed to be approachable to brand-new contributors.\n\n🏁 **When this issue is complete, you will have:**\n\n✅ Learned how to fork and navigate the codebase\n✅ Learned our contribution workflow\n✅ Implemented a real change to the SDK\n\n\n### 🐞 Problem Description\n\n**Description:**\n\nThe docstring for the _from_protobuf() class method contains outdated and incorrect parameter documentation.\n\nCurrently, the docstring references `body_bytes` and `sig_map`, but these parameters are not part of the method signature any more.\n\n**Current implementation:**\n```python\n@classmethod\ndef _from_protobuf(cls, transaction_body):\n    \"\"\"\n    Creates a transaction instance from protobuf components.\n\n    This is an internal method that should be overridden by subclasses to restore\n    transaction-specific fields.\n\n    Args:\n        transaction_body: The parsed TransactionBody protobuf\n        body_bytes (bytes): The raw bytes of the transaction body\n        sig_map: The SignatureMap protobuf containing signatures\n\n    Returns:\n        Transaction: A new transaction instance with all fields restored\n    \"\"\"\n    transaction = cls()\n```\n\n\n### 💡 Solution\n\nUpdate the docstring to accurately reflect the method signature and its purpose. Remove references to parameters that are not accepted by the method and ensure the return description matches the actual implementation.\n\n\n### 🛠️ Implementation Steps\n\n- [ ] Locate the `_from_protobuf(cls, transaction_body)` method int `src/hiero_sdk_python/transaction/transaction.py`\n- [ ]",
+      "url": "https://github.com/hiero-ledger/hiero-sdk-python/issues/2730",
+      "labels": [
+        "scope: docs",
+        "Good First Issue",
+        "approved"
+      ],
+      "assignees": 1,
+      "comments": 6,
+      "createdAt": "2026-10-15T07:38:42Z",
+      "updatedAt": "2026-10-22T12:21:37Z",
+      "repoLanguage": "Python",
+      "repoTopics": [
+        "hedera",
+        "hiero",
+        "python",
+        "sdk",
+        "distributed-ledger-technology",
+        "blockchain",
+        "good-first-issue",
+        "good-first-issues",
+        "open-source"
+      ],
+      "repoLastMergedPrAt": null
+    },
+    {
+      "id": "I_kwDOM9xBhM8AAAABBPUJHw",
+      "org": "hiero-ledger",
+      "repo": "hiero-sdk-python",
+      "number": 2230,
+      "title": "Bug: Assignment bots should refetch issue state before final assignment decision",
+      "body": "## Description\n\n\nThe GFI and beginner `/assign` bots appear to use `context.payload.issue` from the original `issue_comment.created` webhook payload for the final assignment checks.\n\nBecause the webhook payload is a snapshot, a queued workflow run may not reflect issue state changes made by an earlier workflow run. For example, a later `/assign` run may still see `payload.issue.assignees` as empty even if the issue has already been assigned by the time that run executes.\n\nThis means the assignment decision may be based on stale issue state rather than the latest GitHub issue state.\n\n## Files containing the relevant logic\n\n- `.github/scripts/bot-gfi-assign-on-comment.js`\n- `.github/scripts/bot-beginner-assign-on-comment.js`\n\nRelated workflows:\n\n- `.github/workflows/bot-gfi-assign-on-comment.yml`\n- `.github/workflows/bot-beginner-assign-on-comment.yml`\n\n## Expected behavior\n\nBefore making the final assignment decision, the bot should verify the current issue state from the GitHub API, especially:\n\n- current assignees\n- current labels\n- current issue state\n\nIf the issue is already assigned, the bot should not call `addAssignees`.\n\n## Actual behavior\n\nThe current scripts appear to check `issue.assignees` from the webhook payload before calling `github.rest.issues.addAssignees(...)`.\n\nIn a close timing assignment scenario, this could lead to duplicate assignment attempts or follow-up automation running from stale assumptions.\n\n## Why is this important\n\nBoth workflows use concurrency, which helps serialize workflow execution. However, concurrency does not refresh the original webhook payload.\n\nSo a later queued job can run after an earlier job has assigned the issue, while still seeing the original payload state:\n\n```js\ncontext.payload.issue.assignees = []\n```\nRefetching the issue before the final assignment decision would make the assignment bots safer against stale event data.\n\n## Steps to reproduce\n\n### Live timing scenario\n\n1. Create or use an unassigned issue labeled",
+      "url": "https://github.com/hiero-ledger/hiero-sdk-python/issues/2230",
+      "labels": [
+        "Good First Issue"
+      ],
+      "assignees": 1,
+      "comments": 18,
+      "createdAt": "2026-05-04T16:44:26Z",
+      "updatedAt": "2026-10-09T13:14:39Z",
+      "repoLanguage": "Python",
+      "repoTopics": [
+        "hedera",
+        "hiero",
+        "python",
+        "sdk",
+        "distributed-ledger-technology",
+        "blockchain",
+        "good-first-issue",
+        "good-first-issues",
+        "open-source"
+      ],
+      "repoLastMergedPrAt": null
+    },
+    {
+      "id": "I_kwDOM9xBhM8AAAABNNAMNA",
+      "org": "hiero-ledger",
+      "repo": "hiero-sdk-python",
+      "number": 2557,
+      "title": "Add unit tests for the `Duration` class",
+      "body": "### 🆕🐥 Newcomer Friendly\n\nWelcome! This is a **[Good First Issue](https://github.com/issues?q=is%3Aopen%20is%3Aissue%20org%3Ahiero-ledger%20archived%3Afalse%20no%3Aassignee%20(label%3A%22good%20first%20issue%22%20OR%20label%3A%22skill%3A%20good%20first%20issue%22)%20(repo%3Ahiero-ledger%2Fhiero-sdk-cpp%20OR%20repo%3Ahiero-ledger%2Fhiero-sdk-swift%20OR%20repo%3Ahiero-ledger%2Fhiero-sdk-python%20OR%20repo%3Ahiero-ledger%2Fhiero-sdk-js%20OR%20repo%3Ahiero-ledger%2Fhiero-website))** designed to be approachable to brand-new contributors.\n\n🏁 **When this issue is complete, you will have:**\n\n✅ Learned how to fork and navigate the codebase\n✅ Learned our contribution workflow\n✅ Implemented a real change to the SDK\n\n\n### 🐞 Problem Description\n\n`Duration` is a small public value object (exported from `hiero_sdk_python/__init__.py`) that wraps a\nnumber of seconds and converts to and from the protobuf `Duration` message. It is used wherever the\nSDK needs a time span  for example the auto-renew period on topics and accounts.\n \nThere is no `tests/unit/duration_test.py`. Nothing currently verifies that:\n \n- passing a non-integer to `Duration(...)` raises the `TypeError` its `__post_init__` promises,\n- `_to_proto()` / `_from_proto()` round-trip correctly,\n- `__str__`, `__repr__` and `__eq__` behave as written (`__eq__` returns `False` — not\n  `NotImplemented` — for non-`Duration` objects, which is worth pinning down in a test).\nFiles to look at:\n \n- `src/hiero_sdk_python/Duration.py` the code under test (37 lines; note the capital-D filename)\n- `tests/unit/timestamp_test.py` an existing test for the closest sibling type; good reference for\n  how proto conversion is tested here\n- `tests/unit/supply_type_test.py`  reference for file layout and style\n\n### 💡 Solution\n\nAdd `tests/unit/duration_test.py` covering construction, validation, protobuf conversion in both\ndirections, and the dunder methods. Tests only — no production code changes.\n \nPlease write the tests to describe the code's *",
+      "url": "https://github.com/hiero-ledger/hiero-sdk-python/issues/2557",
+      "labels": [
+        "Good First Issue",
+        "approved"
+      ],
+      "assignees": 1,
+      "comments": 18,
+      "createdAt": "2026-08-18T10:58:35Z",
+      "updatedAt": "2026-10-02T18:54:54Z",
+      "repoLanguage": "Python",
+      "repoTopics": [
+        "hedera",
+        "hiero",
+        "python",
+        "sdk",
+        "distributed-ledger-technology",
+        "blockchain",
+        "good-first-issue",
+        "good-first-issues",
+        "open-source"
+      ],
+      "repoLastMergedPrAt": null
+    },
+    {
+      "id": "I_kwDOC8OKfc7h2-5a",
+      "org": "hiero-ledger",
+      "repo": "hiero-mirror-node",
+      "number": 12720,
+      "title": "Investigate and resolve issues running Importer tests on Windows",
+      "body": "### Description\n\nThere have been issues while we ran tests on windows machine. We need to investigate the issue and resolve any problems.\n\n### Steps to reproduce\n\n* Run `./gradlew importer:test` from a Windows machine\n* Identify any errors and correct them\n* Test with WSL and without\n* If the issue is due to a native library not available on Windows the test can be disabled on windows: https://github.com/hiero-ledger/hiero-mirror-node/blob/d482a05d646e6b6a68eed8c2b6181a1149d0e8cd/web3/src/test/java/org/hiero/mirror/web3/service/ContractCallServiceDeployerTest.java#L15\n\n### Additional context\n\n_No response_\n\n### Hedera network\n\n_No response_\n\n### Version\n\nv.0.147.0\n\n### Operating system\n\nWindows",
+      "url": "https://github.com/hiero-ledger/hiero-mirror-node/issues/12720",
+      "labels": [
+        "bug",
+        "Good First Issue",
+        "importer"
+      ],
+      "assignees": 1,
+      "comments": 9,
+      "createdAt": "2026-01-07T15:44:59Z",
+      "updatedAt": "2026-08-29T03:38:47Z",
+      "repoLanguage": "Java",
+      "repoTopics": [],
+      "repoLastMergedPrAt": null
+    },
+    {
+      "id": "I_kwDOTXQlwc8AAAABLH2NWg",
+      "org": "hiero-hackers",
+      "repo": "hiero-streams-rs",
+      "number": 48,
+      "title": "Release workflow should create a GitHub Release on tag push",
+      "body": "## Problem\n\nPushing a release tag (`v*.*.*`) triggers the [Release workflow](https://github.com/hiero-hackers/hiero-streams-rs/blob/main/.github/workflows/release.yml), which publishes the crate to crates.io and the Node binding to GitHub Packages — but nothing creates a GitHub Release. Tags only show up under [/tags](https://github.com/hiero-hackers/hiero-streams-rs/tags); the [/releases](https://github.com/hiero-hackers/hiero-streams-rs/releases) page stays empty unless someone remembers to create the release by hand.\n\nThis has already bitten us twice:\n\n- `v0.2.0` was tagged and published on 2026-07-21 but never got a release entry (still missing).\n- `v0.3.0` was tagged on 2026-08-02 and its release had to be created manually after the fact.\n\nConsumers watching the repo for releases (or using the releases Atom feed) don't see new versions.\n\n## Proposed fix\n\nAdd a small job to `release.yml` that creates the release automatically on tag push:\n\n```yaml\ngithub-release:\n    name: Create GitHub Release\n    runs-on: ubuntu-latest\n    if: startsWith(github.ref, 'refs/tags/')\n    permissions:\n        contents: write\n    steps:\n        - name: Create release\n          env:\n              GH_TOKEN: ${{ github.token }}\n          run: gh release create \"$GITHUB_REF_NAME\" --repo \"$GITHUB_REPOSITORY\" --title \"$GITHUB_REF_NAME\" --generate-notes\n```\n\nNotes:\n\n- `--generate-notes` builds the changelog from merged PRs since the previous tag, so no extra tooling is needed.\n- The job needs `contents: write` (the workflow currently sets a top-level `contents: read`, so the elevated permission should be scoped to this job only, as above).\n- The `if:` guard keeps `workflow_dispatch` (the manual fallback) from trying to create a release without a tag.\n- Kept independent of the publish jobs (no `needs:`), matching the workflow's existing philosophy that each half re-runs and fails cleanly on its own. Alternatively it could `needs: [publish]` so a release only appears once the crate is actual",
+      "url": "https://github.com/hiero-hackers/hiero-streams-rs/issues/48",
+      "labels": [
+        "good first issue"
+      ],
+      "assignees": 1,
+      "comments": 3,
+      "createdAt": "2026-08-02T07:53:50Z",
+      "updatedAt": "2026-08-06T21:19:38Z",
+      "repoLanguage": "Rust",
+      "repoTopics": [
+        "block-stream",
+        "bls-signatures",
+        "cryptography",
+        "groth16",
+        "hedera",
+        "hiero",
+        "parser",
+        "record-stream",
+        "zk-snarks",
+        "new-contributors-welcome"
+      ],
+      "repoLastMergedPrAt": null
+    },
+    {
+      "id": "I_kwDOC8OKfc7beI1E",
+      "org": "hiero-ledger",
+      "repo": "hiero-mirror-node",
+      "number": 12512,
+      "title": "Investigate ways to halt ingest on full database disk",
+      "body": "### Problem\n\nCurrently if the database disk runs out of space, database pods (verified only with citus) will go to a non ready state and this will block the ability to make read requests\n\n### Solution\n\nWe need a way for importer to be aware of how close disk is to full. If any disk reaches a configured threshold, we should halt ingesting. \n\n### Alternatives\n\n_No response_",
+      "url": "https://github.com/hiero-ledger/hiero-mirror-node/issues/12512",
+      "labels": [
+        "enhancement",
+        "Good First Issue",
+        "parser"
+      ],
+      "assignees": 1,
+      "comments": 5,
+      "createdAt": "2025-12-01T17:37:50Z",
+      "updatedAt": "2026-05-15T15:42:28Z",
+      "repoLanguage": "Java",
+      "repoTopics": [],
+      "repoLastMergedPrAt": null
+    },
+    {
+      "id": "I_kwDOD9Tuvs6cvSn3",
+      "org": "hiero-ledger",
+      "repo": "hiero-docs",
+      "number": 813,
+      "title": "docs: define  ERC-3643 and ERC-1363 o the glossary and add it terms to the glossary",
+      "body": "## 🆕🐥 First Timers Only\r\nThis issue is reserved for people who have never contributed to [Hiero](https://hiero.org/) or any open source project in general. We know that creating a pull request (PR) is a major barrier for new contributors. The goal of this issue and all other issues labeled by ['Good First Issue'](https://github.com/issues?q=is%3Aopen+is%3Aissue+org%3Ahashgraph+archived%3Afalse+label%3A%22Good+First+Issue%22+) is to help you make your first contribution to Hiero.\r\n\r\n## 👾 Description of the issue\r\nThe glossary is missing some important terms\r\n\r\n## ✅ Proposed Solution \r\n\r\n**1. Define  these terms** \r\n- [ ] [ERC-3643](https://docs.erc3643.org/erc-3643)\r\n- [ ] [ERC-1363](https://erc1363.org/)\r\n\r\n**2. add the defined terms to the [glossary](https://docs.hedera.com/hedera/support-and-community/glossary) in alphabetical order.**\r\n\r\n\r\n## 📋 Step-by-step guide to Contribute to Hiero\r\n\r\nIf you have never contributed to an open-source project at GitHub, the following step-by-step instructions will##  introduce you to the workflow. \r\n- [ ] **Claim this issue**: Comment below that you are interested in working on the issue\r\n- [ ]  **Wait for assignment**: A community member with the given rights will add you as an assignee of the issue\r\n- [ ]  **Fork the repository**: You can do that in GitHub (by simply clicking the 'fork' button).\r\n- [ ]  **Check out the forked repository**\r\n- [ ]  **Create a feature branch** for the issue. We do not have a hard naming definition for branches but it is best practice to prefix the branch name with the issue id.\r\n- [ ] **Solve the issu**e in your branch.\r\n- [ ] **Commit your changes**: Here, it is needed to add sign-off information to the commit to accept the \"Developer Certificate of Origin\" (https://developercertificate.org/). More details can be found in our [CONTRIBUTING.md](https://github.com/hashgraph/.github/blob/main/CONTRIBUTING.md)\r\n- [ ] **Start a Pull Request (PR)**: We have a pattern for naming pull requests that a Gi",
+      "url": "https://github.com/hiero-ledger/hiero-docs/issues/813",
+      "labels": [
+        "documentation",
+        "good first issue"
+      ],
+      "assignees": 1,
+      "comments": 5,
+      "createdAt": "2024-11-01T18:34:54Z",
+      "updatedAt": "2026-05-05T09:39:23Z",
+      "repoLanguage": "Shell",
+      "repoTopics": [
+        "hacktoberfest"
+      ],
+      "repoLastMergedPrAt": null
+    },
+    {
+      "id": "I_kwDOMaZwDM6UF6fO",
+      "org": "hiero-ledger",
+      "repo": "hiero-solo-action",
+      "number": 3,
+      "title": "Create a youtube video that shows how the action can be used",
+      "body": "## 🆕🐥 First Timers Only\r\n\r\nThis issue is reserved for people who have never contributed to hedera-enterprise or any open source project in general.\r\nWe know that creating a pull request (PR) is a major barrier for new contributors.\r\nThe goal of this issue and all other issues labeled by [**'good first issue'**](https://github.com/OpenElements/hedera-enterprise/labels/good%20first%20issue) is to help you make your first contribution to Hedera.\r\n\r\n## 👾 Description of the issue\r\n\r\nThe documentation for the Hedera Solo GitHub Action is limited today. Based on that it would make sense to create a YouTube video showing how the action can be used. As a good starting point for a workflow the article that we published about the GitHub Action can be used: https://dev.to/hendrikebbers/ci-for-hedera-based-projects-2nja\r\nNext to that a production example for the GitHub Action can be found here: https://github.com/OpenElements/hedera-enterprise/actions/workflows/maven.yml\r\n\r\nThe video should be added to the readme of https://github.com/LFDT-Hiero/awesome-contributions (by creating a PR).\r\n\r\n### Suggested solution\r\n\r\nCreate a YouTube video and link it in the README.md file.\r\n\r\n## 📋 Step by step guide to do a contribution\r\n\r\nIf you have never contributed to an open source project at GitHub, the following step-by-step guide will introduce you to the workflow. \r\nA more detailed general documentation of the GitHub PR workflow can be found [here](https://github.com/firstcontributions/first-contributions/blob/master/README.md).\r\n\r\n- [ ] **Claim this issue:** Comment below that you are interested in working on the issue\r\n- [ ] **Wait for assignment:** A community member with the given rights will add you as an assignee of the issue\r\n- [ ] **Fork the repository:** You can do that in GitHub (by simply clicking the 'fork' button).\r\n- [ ] **Check out the forked repository**\r\n- [ ] **Create a feature branch** for the issue. We do not have a hard naming definition for branches but it is best p",
+      "url": "https://github.com/hiero-ledger/hiero-solo-action/issues/3",
+      "labels": [
+        "help wanted",
+        "hacktoberfest",
+        "Good First Issue Candidate"
+      ],
+      "assignees": 1,
+      "comments": 10,
+      "createdAt": "2024-08-24T13:05:45Z",
+      "updatedAt": "2026-05-03T23:25:13Z",
+      "repoLanguage": "Shell",
+      "repoTopics": [
+        "actions",
+        "hiero",
+        "web3",
+        "hacktoberfest"
+      ],
+      "repoLastMergedPrAt": null
+    },
+    {
+      "id": "I_kwDOHD2lU878wdnD",
+      "org": "hiero-ledger",
+      "repo": "hiero-sdk-rust",
+      "number": 1264,
+      "title": "ProtoBuf file issues in beginner setup",
+      "body": "### Description\n\nI ran the initial steps in the project setup (README) and encountered an issue of the proto files not being correctly compiled\n\n```\ntest@pop-os:~/Desktop/rust/hiero-sdk-rust$ cargo build\n   Compiling hiero-sdk-proto v0.21.0 (/home/test/Desktop/rust/hiero-sdk-rust/protobufs)\nerror[E0433]: failed to resolve: could not find `com` in the crate root\n    --> /home/test/Desktop/rust/hiero-sdk-rust/target/debug/build/hiero-sdk-proto-4d0402199114e214/out/proto.rs:8178:27\n     |\n8178 |             super::super::com::hedera::hapi::services::auxiliary::blockrecords::MigrationRootHashVoteTransactionBody,\n     |                           ^^^ could not find `com` in the crate root\n\nFor more information about this error, try `rustc --explain E0433`.\nerror: could not compile `hiero-sdk-proto` (lib) due to 1 previous error\n```\n\n\n### Steps to reproduce\n\n1. clone it the repo as a beginner\n2. run `git submodule update --recursive --remote`\n3. run cargo build\n\n### Additional context\n\n_No response_\n\n### Hedera network\n\n_No response_\n\n### Version\n\ncurrent version\n\n### Operating system\n\nLinux",
+      "url": "https://github.com/hiero-ledger/hiero-sdk-rust/issues/1264",
+      "labels": [
+        "bug",
+        "Good First Issue",
+        "Beginner"
+      ],
+      "assignees": 1,
+      "comments": 1,
+      "createdAt": "2026-04-10T16:51:38Z",
+      "updatedAt": "2026-04-17T09:59:24Z",
+      "repoLanguage": "Rust",
+      "repoTopics": [
+        "hacktoberfest"
+      ],
+      "repoLastMergedPrAt": null
+    },
+    {
+      "id": "I_kwDOHD2lU86WQmmb",
+      "org": "hiero-ledger",
+      "repo": "hiero-sdk-rust",
+      "number": 845,
+      "title": "Add missing network configurations with `Client`",
+      "body": "## 🆕🐥 First Timers Only\r\n\r\nThis issue is reserved for people who have never contributed to [Hedera](https://hedera.com) or any open source project in general.\r\nWe know that creating a pull request (PR) is a major barrier for new contributors.\r\nThe goal of this issue and all other issues labeled by [**'good first issue'**](https://github.com/issues?q=is%3Aopen+is%3Aissue+org%3Ahashgraph+archived%3Afalse+label%3A%22good+first+issue%22+) is to help you make your first contribution to Hedera.\r\n\r\n## 👾 Description of the issue\r\n\r\nThese SDK methods for the Hedera network are critical for configuring client behavior and ensuring robust network communication. The methods allow for setting and checking transport security (TLS), managing retry attempts for nodes with failed gRPC statuses, and controlling the number of nodes involved in each transaction, which impacts both security and network efficiency.\r\n\r\nThe Rust SDK is missing the following `Client` methods that allow developers to configure the `Network` behavior in [client/mod.rs](https://github.com/hashgraph/hedera-sdk-rust/blob/main/src/client/mod.rs).\r\n\r\n``` rust\r\nimpl Client {\r\n\t///\r\n\t/// Set if transport security should be used to connect to consensus nodes.\r\n\t///\r\n\tpub fn set_transport_security(&self, transport_security: bool) {}\r\n\r\n\t///\r\n\t/// Is tls enabled for consensus nodes.\r\n\t///\r\n\tpub fn is_transport_security(&self) {}\r\n\r\n\t///\r\n\t/// Max number of times any node in the network can receive a bad gRPC status \r\n\t///\r\n\tpub fn get_max_node_attempts(&self) {}\r\n\r\n\t///\r\n\t/// Set the max number of times any node in the network can receive a bad gRPC status before being removed from the network.\r\n\t///\r\n\tpub fn set_max_node_attempts(&self, max_node_attempts: u32) {}\r\n\r\n\t///\r\n    /// Set the max amount of nodes that will be chosen per request. By default, the request will use 1/3rd the network\r\n    /// nodes per request.\r\n    ///\r\n\tpub fn set_max_nodes_per_transaction(&self, max_nodes_per_transaction: u32) {}\r\n}\r\n```\r\n\r\n#",
+      "url": "https://github.com/hiero-ledger/hiero-sdk-rust/issues/845",
+      "labels": [
+        "help wanted",
+        "Good First Issue Candidate",
+        "hacktoberfest"
+      ],
+      "assignees": 1,
+      "comments": 5,
+      "createdAt": "2024-09-11T22:53:51Z",
+      "updatedAt": "2026-02-24T01:19:27Z",
+      "repoLanguage": "Rust",
+      "repoTopics": [
+        "hacktoberfest"
+      ],
+      "repoLastMergedPrAt": null
+    },
+    {
+      "id": "I_kwDOC8OKfc6Suy46",
+      "org": "hiero-ledger",
+      "repo": "hiero-mirror-node",
+      "number": 9010,
+      "title": "Fix code smells",
+      "body": "### Problem\n\nCodacy has a huge number of code smells that due to their size we never pay attention to.\n\n### Solution\n\n* Fix as many code smells as possible.\n* Break into multiple PRs perhaps by fixing all smells for the largest rule first, then the next largest, etc.\n* Don't suppress any warnings in the code or in the UI unless approved with the team beforehand\n\n### Alternatives\n\n_No response_",
+      "url": "https://github.com/hiero-ledger/hiero-mirror-node/issues/9010",
+      "labels": [
+        "enhancement",
+        "Good First Issue",
+        "technical debt"
+      ],
+      "assignees": 1,
+      "comments": 10,
+      "createdAt": "2024-08-12T19:29:55Z",
+      "updatedAt": "2026-01-09T18:08:12Z",
+      "repoLanguage": "Java",
+      "repoTopics": [],
+      "repoLastMergedPrAt": null
+    },
+    {
+      "id": "I_kwDOD5sxF87G2GK1",
+      "org": "hiero-ledger",
+      "repo": "hiero-consensus-node",
+      "number": 20719,
+      "title": "Windows compilation fails due to `dangling-doc-comments` warning",
+      "body": "## 🆕🐥 First Timers Only\n\nThis issue is reserved for people who have never contributed to [Hiero](https://hiero.org) or any open source project in general.\nWe know that creating a pull request (PR) is a major barrier for new contributors.\nThe goal of this issue and all other issues labeled by [**'good first issue'**](https://github.com/issues?q=is%3Aopen+is%3Aissue+org%3Ahiero-ledger+archived%3Afalse+label%3A%22good+first+issue%22+) is to help you make your first contribution to Hiero.\n\n## 👾 Description of the issue\nThere are errors when compiling using Java 23 and higher. \n\nCompiling from commandline with `./gradlew clean assemble` has the `-Werror` flag set which turns all warnings into errors.  \n\nThe `dangling-doc-comment` warning triggers on the following classes when compiling: \n* FCQueue.java\n* VirtualRootNode.java\n* ConsensusImpl.java\n* EnhancedKeyStoreLoader.java\n* Utilities.java\n* KeyComparatorTest.java\n* StandardScratchPad.java\n* WritableFreezeStore.java\n* BlockRecordWriterV6.java\n* OutputNoEventsLostValidation.java\n* BlockRecordWriterV6.java\n* StateBuilder.java\n* CryptocurrencyDemoState.java\n* TransactionSubmitter.java\n* AtomicTokenCreateSpecs.java\n* SStoreSuite.java\n* PayloadDistribution.java\n* StatsDemoMain.java\n* EnhancedKeyStoreLoaderTest.java\n* \n## 💡 Solution\n\nFix the dangling comments so that they are no longer viewed as javadoc comments.    This issue is fixed when the compilation command no longer displays errors. \n\n### 👩‍💻 Implementation\n\nModify the dangling javadoc comments to be regular code comments.  \n\nExample: \n- change `///` to `//`. \n- change `/**` to `/*`\n\n## 📋 Step by step guide to do a contribution\n\nIf you have never contributed to an open source project at GitHub, the following step-by-step guide will introduce you to the workflow.\nMore information and concrete samples for shell commands for each step can be found in our [CONTRIBUTING.md](https://github.com/hiero-ledger/.github/blob/main/CONTRIBUTING.md) file.\nA more detailed general do",
+      "url": "https://github.com/hiero-ledger/hiero-consensus-node/issues/20719",
+      "labels": [
+        "Good First Issue"
+      ],
+      "assignees": 1,
+      "comments": 5,
+      "createdAt": "2025-08-19T23:57:32Z",
+      "updatedAt": "2025-10-28T18:55:08Z",
+      "repoLanguage": "Java",
+      "repoTopics": [
+        "hacktoberfest"
+      ],
+      "repoLastMergedPrAt": null
+    },
+    {
+      "id": "I_kwDOHD2lU86WRIDd",
+      "org": "hiero-ledger",
+      "repo": "hiero-sdk-rust",
+      "number": 846,
+      "title": "Add example: Add and remove NFT Allowances",
+      "body": "## 🆕🐥 First Timers Only\r\n\r\nThis issue is reserved for people who have never contributed to [Hedera](https://hedera.com) or any open source project in general.\r\nWe know that creating a pull request (PR) is a major barrier for new contributors.\r\nThe goal of this issue and all other issues labeled by [**'good first issue'**](https://github.com/issues?q=is%3Aopen+is%3Aissue+org%3Ahashgraph+archived%3Afalse+label%3A%22good+first+issue%22+) is to help you make your first contribution to Hedera.\r\n\r\n## 👾 Description of the issue\r\n\r\nThe Hedera SDK offers an example to demonstrate how to add and remove NFT allowances, which is a crucial process for controlling asset permissions. However, the complexity of the operations can make it difficult for developers to follow without a clear step-by-step breakdown.\r\n\r\n## Solution \r\nThis example in the Java SDK showcases the process of managing NFT allowances, including creating NFTs, approving and revoking permissions, and transferring tokens using the Hedera SDK. By following these steps, developers can implement allowance functionality efficiently. [NftAddRemoveAllowancesExamples.java](https://github.com/hashgraph/hedera-sdk-java/blob/main/examples/src/main/java/com/hedera/hashgraph/sdk/examples/NftAddRemoveAllowancesExample.java)\r\n\r\nWe need to provide that example for the RUST-SDK, too.\r\n\r\n## Implementation\r\n1. Set up the SDK client with the necessary operator account and key.\r\n2. Create a unique NFT and retrieve the associated token ID.\r\n3. Mint NFTs by attaching metadata to each unique token serial number.\r\n4. Generate spender and receiver accounts with their respective keys.\r\n5. Associate the spender and receiver accounts with the NFT token.\r\n6. Grant allowance for specific NFT serials to the spender account.\r\n7. Execute an NFT transfer using the approved allowance on behalf of the spender.\r\n8. Revoke the allowance for specific NFT serial numbers.\r\n9. Attempt another transfer after revocation to confirm the permission removal.\r\n1",
+      "url": "https://github.com/hiero-ledger/hiero-sdk-rust/issues/846",
+      "labels": [
+        "help wanted",
+        "Good First Issue Candidate",
+        "hacktoberfest"
+      ],
+      "assignees": 1,
+      "comments": 3,
+      "createdAt": "2024-09-12T00:40:35Z",
+      "updatedAt": "2025-10-08T11:59:45Z",
+      "repoLanguage": "Rust",
+      "repoTopics": [
+        "hacktoberfest"
+      ],
+      "repoLastMergedPrAt": null
+    },
+    {
+      "id": "I_kwDOHuQcPM6Vgj00",
+      "org": "hiero-ledger",
+      "repo": "hiero-sdk-tck",
+      "number": 237,
+      "title": "Make the test timeout a configurable value",
+      "body": "## 🆕🐥 First Timers Only\r\n\r\nThis issue is reserved for people who have never contributed to [Hedera](https://hedera.com) or any open source project in general.\r\nWe know that creating a pull request (PR) is a major barrier for new contributors.\r\nThe goal of this issue and all other issues labeled by [**'good first issue'**](https://github.com/issues?q=is%3Aopen+is%3Aissue+org%3Ahashgraph+archived%3Afalse+label%3A%22good+first+issue%22+) is to help you make your first contribution to Hedera.\r\n\r\n## 👾 Description of the issue\r\n\r\nCurrently, tests are hardcoded to timeout after 30 seconds. This should be made a configurable value.\r\n\r\n### Proposed Solution\r\n\r\n1. Add a `TEST_TIMEOUT` configuration value to the `.env.custom_node` and `.env.testnet` files that allows a user to control how quickly a test should timeout.\r\n2. Make necessary code changes to pull in this value and set it for all test suites. This includes all `*.js` files under the `test/` directory. A `describe` block is used to demarcate the tests for a specific request type and within the `describe` block, there should be a `this.timeout(30000);` line or something to that effect. This is what specifies the timeout for tests. If no value is provided, a default value (30) should be used.\r\n3. Verify the timeout. Follow the directions in the [README](https://github.com/hashgraph/hedera-sdk-tck/blob/main/README.md) to start an SDK server and configure the TCK to run with the [hedera-local-node](https://github.com/hashgraph/hedera-local-node) and run it. Change the `NODE_IP` value in your `.env` file to use a different port and set `TEST_TIMEOUT` to 2000. Run the TCK using `npm test run` and observe the tests failing after 2 seconds. You should be able to then change the value to 3000 to see the tests failing after 3 seconds.\r\n\r\n## 📋 Step by step guide to do a contribution\r\n\r\nIf you have never contributed to an open source project at GitHub, the following step-by-step guide will introduce you to the workflow. More inf",
+      "url": "https://github.com/hiero-ledger/hiero-sdk-tck/issues/237",
+      "labels": [
+        "enhancement",
+        "help wanted",
+        "Good First Issue Candidate",
+        "hacktoberfest"
+      ],
+      "assignees": 1,
+      "comments": 2,
+      "createdAt": "2024-09-05T17:17:37Z",
+      "updatedAt": "2025-10-07T12:53:24Z",
+      "repoLanguage": "TypeScript",
+      "repoTopics": [
+        "hacktoberfest"
+      ],
+      "repoLastMergedPrAt": null
+    }
+  ]
+}

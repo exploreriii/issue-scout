@@ -1,0 +1,55 @@
+[
+  {
+    "source": "github",
+    "handle": "exploreriii",
+    "languages": [
+      {
+        "name": "TypeScript",
+        "weight": 1
+      },
+      {
+        "name": "C++",
+        "weight": 0.33
+      },
+      {
+        "name": "Java",
+        "weight": 0.33
+      },
+      {
+        "name": "Python",
+        "weight": 0.33
+      }
+    ],
+    "experienceBand": 2,
+    "excludeRepos": []
+  },
+  {
+    "source": "text",
+    "languages": [
+      {
+        "name": "Python",
+        "weight": 1
+      }
+    ],
+    "experienceBand": 0,
+    "timeBudgetHours": 4,
+    "excludeRepos": []
+  },
+  {
+    "source": "text",
+    "languages": [
+      {
+        "name": "Rust",
+        "weight": 1
+      },
+      {
+        "name": "TypeScript",
+        "weight": 0.5
+      }
+    ],
+    "experienceBand": 1,
+    "timeBudgetHours": 10,
+    "wantsTests": true,
+    "excludeRepos": []
+  }
+]

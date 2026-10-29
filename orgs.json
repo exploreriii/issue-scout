@@ -1,0 +1,38 @@
+[
+  {
+    "login": "hiero-ledger",
+    "displayName": "Hiero Ledger",
+    "enabled": true,
+    "labels": {
+      "firstIssue": ["good first issue", "skill: good first issue"],
+      "helpWanted": ["help wanted"],
+      "claimed": ["claimed", "in progress", "assigned"],
+      "exclude": ["epic", "discussion", "tracking", "duplicate", "wontfix"]
+    },
+    "defaultLanguages": ["Python", "TypeScript", "Java", "Go", "Rust", "C++"]
+  },
+  {
+    "login": "hiero-hackers",
+    "displayName": "Hiero Hackers",
+    "enabled": true,
+    "labels": {
+      "firstIssue": ["good first issue", "skill: good first issue"],
+      "helpWanted": ["help wanted"],
+      "claimed": ["claimed", "in progress", "assigned"],
+      "exclude": ["epic", "discussion", "tracking", "duplicate", "wontfix"]
+    },
+    "defaultLanguages": ["Python", "TypeScript", "Rust"]
+  },
+  {
+    "login": "LFDT-CLPR",
+    "displayName": "LFDT CLPR",
+    "enabled": true,
+    "labels": {
+      "firstIssue": ["good first issue", "skill: good first issue"],
+      "helpWanted": ["help wanted"],
+      "claimed": ["claimed", "in progress", "assigned"],
+      "exclude": ["epic", "discussion", "tracking", "duplicate", "wontfix"]
+    },
+    "defaultLanguages": []
+  }
+]

@@ -1,0 +1,25 @@
+{
+  "name": "issue-scout",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Issue Scout: a read-only good-first-issue matcher on the Cloudflare developer platform.",
+  "license": "Apache-2.0",
+  "type": "module",
+  "packageManager": "pnpm@12.9.1",
+  "engines": {
+    "node": ">=26"
+  },
+  "scripts": {
+    "dev": "wrangler dev",
+    "test": "pnpm -r test",
+    "lint": "pnpm -r --if-present lint",
+    "typecheck": "pnpm -r typecheck",
+    "check-orgs": "node scripts/check-orgs.mjs",
+    "check:token": "node scripts/check-token-scope.mjs",
+    "check:pins": "node scripts/check-pins.mjs",
+    "deploy": "pnpm --filter @issue-scout/ui --if-present build && wrangler deploy"
+  },
+  "devDependencies": {
+    "wrangler": "^4.155.0"
+  }
+}
