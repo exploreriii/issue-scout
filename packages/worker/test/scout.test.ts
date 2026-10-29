@@ -1,5 +1,7 @@
 import { env } from "cloudflare:test";
+import { createExecutionContext, waitOnExecutionContext } from "cloudflare:test";
 import { RATE_LIMIT_PER_HOUR } from "@issue-scout/sources";
+import worker from "../src/index";
 import { beforeEach, describe, expect, it } from "vitest";
 import { handleOrgs, handleScout } from "../src/routes/scout";
 import { clearKv, makeDeps } from "./helpers";
@@ -139,5 +141,45 @@ describe("POST /scout with orgs (FR-16)", () => {
 
     const filtered = (await (await handleScout(post({ handle: "exploreriii", orgs: ["hiero-hackers"] }), env, makeDeps().deps)).json()) as any;
     expect(filtered.orgCounts).toEqual(all.orgCounts);
+  });
+});
+
+describe("POST /scout?explain=0", () => {
+  const postQ = (query: string, body: unknown) =>
+    new Request(`https://example.com/scout${query}`, { method: "POST", body: JSON.stringify(body) });
+
+  it("returns ranked cards with explanations pending and no model call; a second call fills them from the warm cache", async () => {
+    const t = makeDeps();
+    const quick = (await (await handleScout(postQ("?explain=0", { handle: "exploreriii" }), env, t.deps)).json()) as any;
+    expect(quick.explanations).toBe("pending");
+    expect(quick.shortlist).toHaveLength(5);
+    for (const item of quick.shortlist) expect(item.explanation).toBeUndefined();
+    expect(t.ai.calls).toHaveLength(0);
+    expect(t.fetches).toEqual({ issues: 3, profiles: 1 });
+
+    const before = { ...t.fetches };
+    const full = (await (await handleScout(postQ("", { handle: "exploreriii" }), env, t.deps)).json()) as any;
+    expect(t.fetches).toEqual(before); // same snapshot, zero source fetches
+    expect(t.gh.calls).toHaveLength(0);
+    expect(full.explanations).toBe("ok");
+    expect(full.snapshot.id).toBe(quick.snapshot.id);
+    expect(full.shortlist.map((i: any) => i.issue.id)).toEqual(quick.shortlist.map((i: any) => i.issue.id));
+    for (const item of full.shortlist) expect(item.explanation.issueId).toBe(item.issue.id);
+  });
+});
+
+describe("scheduled warm-up", () => {
+  it("refreshes every enabled org's snapshot so the next /scout fetches nothing", async () => {
+    const t = makeDeps();
+    const ctx = createExecutionContext();
+    await worker.scheduled({ cron: "*/30 * * * *", scheduledTime: Date.now(), type: "scheduled" } as unknown as ScheduledController, env, ctx, t.deps);
+    await waitOnExecutionContext(ctx);
+    expect(t.fetches).toEqual({ issues: 3, profiles: 0 });
+    const keys = (await env.CACHE.list({ prefix: "snap:" })).keys.map((k) => k.name);
+    expect(keys).toHaveLength(3);
+
+    const res = await handleScout(new Request("https://example.com/scout", { method: "POST", body: JSON.stringify({ handle: "exploreriii" }) }), env, t.deps);
+    expect(res.status).toBe(200);
+    expect(t.fetches).toEqual({ issues: 3, profiles: 1 }); // no further issue fetches
   });
 });

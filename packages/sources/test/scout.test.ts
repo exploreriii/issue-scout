@@ -8,6 +8,7 @@ import {
   MemoryCache,
   scout,
   snapshotId,
+  warmSnapshots,
   type IssueSource,
   type ScoutDeps,
 } from "../src/index.js";
@@ -115,5 +116,35 @@ describe("scout()", () => {
     expect(r.top.length).toBeGreaterThan(0);
     const off = await scout({ profileText: "Python" }, { ...deps(), registry: registry.map((o) => ({ ...o, enabled: o.login === "hiero-ledger" })), cache: new MemoryCache() });
     expect(off.fetches.issues).toBe(1);
+  });
+});
+
+describe("warmSnapshots()", () => {
+  it("refreshes every enabled org regardless of age, so a following scout() fetches nothing", async () => {
+    const { deps, advance, cache } = setup();
+    await scout({ profileText: "Python" }, deps());
+    advance(3000); // still inside the TTL, but the cron refreshes anyway
+    let calls = 0;
+    const counting: IssueSource = { fetchOpenIssues: (o) => (calls++, new FixtureIssueSource(snapshot).fetchOpenIssues(o)) };
+    const r = await warmSnapshots(registry, { issues: counting, cache, now: new Date(T0 + 3_000_000) });
+    expect(calls).toBe(3);
+    expect(r.failed).toEqual([]);
+    expect(r.refreshed).toHaveLength(3);
+    advance(3000); // 6000 s after the first fill: expired without the warm-up
+    const next = await scout({ profileText: "Python" }, deps());
+    expect(next.fetches.issues).toBe(0);
+  });
+
+  it("keeps going when one org fails", async () => {
+    const { cache } = setup();
+    const flaky: IssueSource = {
+      async fetchOpenIssues(org) {
+        if (org.login === "hiero-hackers") throw new Error("boom");
+        return [];
+      },
+    };
+    const r = await warmSnapshots(registry, { issues: flaky, cache, now: new Date(T0) });
+    expect(r.failed).toEqual(["hiero-hackers"]);
+    expect(r.refreshed).toEqual(["hiero-ledger", "LFDT-CLPR"]);
   });
 });

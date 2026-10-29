@@ -1,4 +1,5 @@
 import type { AiBinding } from "@issue-scout/explainer";
+import type { Ranked } from "@issue-scout/core";
 import { ToolCall } from "./tools";
 
 /** The deterministic command grammar. Anything else goes to the single model fallback. */
@@ -62,6 +63,51 @@ export function parseCommand(input: string): Command | null {
   }
   if ((m = /^explain\s+#?(\d{1,2})$/i.exec(t))) return { cmd: "explain", n: Number(m[1]) };
   return null;
+}
+
+/** Language names recognised anywhere in free text. `caseSensitive` guards names that are also common words. */
+const FREE_TEXT_LANGUAGES: { name: string; re: RegExp }[] = [
+  { name: "Python", re: /\bpython\b/i },
+  { name: "Rust", re: /\brust\b/i },
+  { name: "TypeScript", re: /\btypescript\b/i },
+  { name: "JavaScript", re: /\bjavascript\b/i },
+  { name: "Go", re: /\bGo\b|\bgolang\b/ }, // "Go" only capitalised: "go ahead" is not a language
+  { name: "Java", re: /\bjava\b/i },
+  { name: "C++", re: /\bc\+\+(?![\w+])/i },
+  { name: "C#", re: /\bc#/i },
+  { name: "Kotlin", re: /\bkotlin\b/i },
+  { name: "Swift", re: /\bSwift\b/ }, // capitalised only: "a swift fix"
+  { name: "Ruby", re: /\bruby\b/i },
+  { name: "PHP", re: /\bphp\b/i },
+  { name: "Dart", re: /\bdart\b/i },
+  { name: "Solidity", re: /\bsolidity\b/i },
+];
+const NEW_REPO_RE = /\b(?:new|different|another)\s+(?:repo|repos|repository|repositories)\b/i;
+const SMALL_RE = /\b(?:smaller|quick|quicker|evening)\b/i;
+const TESTS_RE = /\btests\b/i;
+
+/**
+ * A sentence like "I want to find a Rust issue in a new repository that fits my skills", read without a model.
+ * `currentTop` is the list on screen, so "new repository" can exclude what is already shown.
+ * Returns null when nothing is recognised, which is what sends the text on to the model fallback.
+ */
+export function interpretFreeText(input: string, currentTop: Ranked[]): Extract<ToolCall, { tool: "refine" }> | null {
+  const text = input.slice(0, 500);
+  const languages = FREE_TEXT_LANGUAGES.filter((l) => l.re.test(text)).map((l) => l.name);
+  const newRepo = NEW_REPO_RE.test(text);
+  const small = SMALL_RE.test(text);
+  const tests = TESTS_RE.test(text);
+  if (languages.length === 0 && !newRepo && !small && !tests) return null;
+
+  const call: Extract<ToolCall, { tool: "refine" }> = { tool: "refine" };
+  if (languages.length > 0) call.languages = languages.slice(0, 5);
+  if (newRepo) {
+    const repos = [...new Set(currentTop.map((r) => `${r.issue.org}/${r.issue.repo}`))].slice(0, 10);
+    if (repos.length > 0) call.excludeRepos = repos;
+  }
+  if (small) call.timeBudgetHours = 4;
+  if (tests) call.wantsTests = true;
+  return call.languages || call.excludeRepos || call.timeBudgetHours !== undefined || call.wantsTests !== undefined ? call : null;
 }
 
 const SYSTEM = [

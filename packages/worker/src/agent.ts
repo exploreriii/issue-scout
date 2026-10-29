@@ -1,7 +1,7 @@
 import { Agent, type Connection, type ConnectionContext, type WSMessage } from "agents";
 import type { Ranked } from "@issue-scout/core";
 import { HANDLE_RE, ProfileNotFoundError, RATE_LIMIT_PER_HOUR, checkRateLimit, type ScoutInput } from "@issue-scout/sources";
-import { interpretWithAi, parseCommand, type Command } from "./commands";
+import { interpretFreeText, interpretWithAi, parseCommand, type Command } from "./commands";
 import type { Env } from "./env";
 import { describeError, logFailure } from "./errors";
 import { createDeps, runScout, type Deps, type OrgCounts } from "./flow";
@@ -20,6 +20,7 @@ import {
   checkWatchedIssue,
   excludeRepo,
   explainIssue,
+  listing,
   refine,
   repoContext,
   watch,
@@ -174,6 +175,8 @@ export class IssueScoutAgent extends Agent<Env, IssueScoutState> {
 
     const cmd = parseCommand(text);
     let action: Action | null = cmd ? commandToAction(cmd) : null;
+    // Deterministic free text ("a Rust issue in a new repository") before any model call.
+    if (!action) action = interpretFreeText(text, this.state.ranked?.top ?? []);
     if (!action) {
       const viaModel = await interpretWithAi(deps.ai, deps.model, text);
       action = viaModel;
@@ -247,10 +250,9 @@ export class IssueScoutAgent extends Agent<Env, IssueScoutState> {
       if (out.top.length === 0) {
         return { text: `No open good-first-issue matches ${who} right now. ${HELP}` };
       }
-      const lines = out.top.map((r, i) => `${i + 1}. ${r.issue.org}/${r.issue.repo}#${r.issue.number} ${r.issue.title}`);
       const note = out.explanationsStatus === "unavailable" ? "\n(Explanations are unavailable right now; the reasons on each card still apply.)" : "";
       return {
-        text: `Here are your top ${out.top.length} matches ${who}:\n${lines.join("\n")}${note}\n${HELP}`,
+        text: `Here are your top ${out.top.length} matches ${who}:\n${listing(out.top)}${note}\n${HELP}`,
         shortlist: toShortlist(out.top, out.explanations),
         orgCounts: out.orgCounts,
       };

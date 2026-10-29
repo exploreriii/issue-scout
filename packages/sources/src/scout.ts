@@ -65,6 +65,36 @@ export async function snapshotId(orgLogins: string[], recordedAt: string): Promi
   return sha256Hex(`${[...orgLogins].sort().join(",")}|${recordedAt}`);
 }
 
+/** Fetch one org's open issues and store them as its snapshot (the single fetch+cache path). */
+async function refreshSnapshot(org: OrgConfig, issues: IssueSource, cache: Cache, now: Date): Promise<CachedSnapshot> {
+  const fresh: CachedSnapshot = { recordedAt: now.toISOString(), issues: await issues.fetchOpenIssues(org) };
+  await cache.put(await snapshotKey(org), fresh, SNAPSHOT_TTL_SECONDS);
+  return fresh;
+}
+
+export interface WarmDeps {
+  issues: IssueSource;
+  cache: Cache;
+  now: Date;
+}
+
+export interface WarmResult {
+  refreshed: string[];
+  failed: string[];
+}
+
+/**
+ * Refresh every enabled org's snapshot regardless of its age, so user requests land on a warm cache.
+ * One org failing does not stop the others; the previous snapshot (if any) is left in place.
+ */
+export async function warmSnapshots(registry: OrgConfig[], deps: WarmDeps): Promise<WarmResult> {
+  const orgs = registry.filter((o) => o.enabled);
+  const settled = await Promise.allSettled(orgs.map((org) => refreshSnapshot(org, deps.issues, deps.cache, deps.now)));
+  const result: WarmResult = { refreshed: [], failed: [] };
+  settled.forEach((r, i) => (r.status === "fulfilled" ? result.refreshed : result.failed).push(orgs[i]!.login));
+  return result;
+}
+
 export async function scout(input: ScoutInput, deps: ScoutDeps): Promise<ScoutResult> {
   const { cache, registry, now } = deps;
   const fetches = { issues: 0, profiles: 0 };
@@ -109,9 +139,7 @@ export async function scout(input: ScoutInput, deps: ScoutDeps): Promise<ScoutRe
         const ageMs = now.getTime() - Date.parse(parsed.data.recordedAt);
         if (ageMs >= 0 && ageMs < SNAPSHOT_TTL_SECONDS * 1000) return parsed.data;
       }
-      const fresh: CachedSnapshot = { recordedAt: now.toISOString(), issues: await issues.fetchOpenIssues(org) };
-      await cache.put(key, fresh, SNAPSHOT_TTL_SECONDS);
-      return fresh;
+      return refreshSnapshot(org, issues, cache, now);
     }),
   );
 

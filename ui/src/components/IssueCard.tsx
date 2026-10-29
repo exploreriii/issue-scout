@@ -3,6 +3,8 @@ import type { Ranked, Explanation } from "../api";
 interface Props {
   item: Ranked & { explanation?: Explanation };
   headingLevel?: 2 | 3;
+  /** True while the explanations are still being written; a card without one shows a placeholder. */
+  explaining?: boolean;
 }
 
 function CheckIcon() {
@@ -31,7 +33,7 @@ export function matchLabel(score: number): string {
   return "Possible match";
 }
 
-export function IssueCard({ item, headingLevel = 3 }: Props) {
+export function IssueCard({ item, headingLevel = 3, explaining = false }: Props) {
   const { issue, score, reasons, explanation } = item;
   const label = matchLabel(score);
   const pct = Math.max(0, Math.min(100, (score / MAX_SCORE) * 100));
@@ -46,7 +48,15 @@ export function IssueCard({ item, headingLevel = 3 }: Props) {
     >
       <div>
         <p className="text-xs font-medium tracking-wide text-muted">
-          {issue.org}/{issue.repo}#{issue.number}
+          <a
+            href={`https://github.com/${issue.org}/${issue.repo}`}
+            target="_blank"
+            rel="noreferrer noopener"
+            className="underline decoration-line-strong underline-offset-4 hover:text-fg hover:decoration-fg"
+          >
+            {issue.org}/{issue.repo}
+          </a>
+          #{issue.number}
           {issue.repoLanguage ? ` · ${issue.repoLanguage}` : ""}
         </p>
         <H id={`title-${issue.id}`} className="mt-1 font-serif text-lg leading-snug">
@@ -118,6 +128,13 @@ export function IssueCard({ item, headingLevel = 3 }: Props) {
             <dd className="mt-0.5">{explanation.firstStep}</dd>
           </div>
         </dl>
+      )}
+      {!explanation && explaining && (
+        <div role="status" className="space-y-2 rounded-md bg-inset p-4 text-sm text-muted">
+          <p>Writing a short explanation…</p>
+          <div aria-hidden="true" className="shimmer h-2.5 w-4/5 rounded-full" />
+          <div aria-hidden="true" className="shimmer h-2.5 w-3/5 rounded-full" />
+        </div>
       )}
     </article>
   );

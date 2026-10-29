@@ -16,6 +16,7 @@ export { GithubProfileSource, HANDLE_RE, isValidHandle, assertValidHandle } from
 export { FixtureIssueSource, FixtureProfileSource, fixtureSources } from "./fixture.js";
 export {
   scout,
+  warmSnapshots,
   snapshotId,
   snapshotKey,
   profileKey,
@@ -24,5 +25,7 @@ export {
   type ScoutDeps,
   type ScoutInput,
   type ScoutResult,
+  type WarmDeps,
+  type WarmResult,
 } from "./scout.js";
 export { checkRateLimit, RATE_LIMIT_PER_HOUR, type RateLimitResult } from "./ratelimit.js";

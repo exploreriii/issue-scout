@@ -42,6 +42,9 @@
 			]
 		}
 	],
+	"triggers": {
+		"crons": ["*/30 * * * *"]
+	},
 	"vars": {
 		"ORGS_FILE": "orgs.json",
 		"AI_MODEL": "@cf/meta/llama-3.3-70b-instruct-fp8-fast"

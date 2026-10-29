@@ -2,6 +2,21 @@ import { useState, type FormEvent } from "react";
 import type { useScoutChat } from "../agent";
 import type { ScoutInput } from "../api";
 
+const URL_RE = /(https?:\/\/[^\s)]+)/g;
+
+/** Plain text with any URL made a link (new tab). Chat text is data, so nothing is rendered as HTML. */
+function linkify(text: string) {
+  return text.split(URL_RE).map((part, i) =>
+    i % 2 === 1 ? (
+      <a key={i} href={part} target="_blank" rel="noreferrer noopener" className="underline underline-offset-4">
+        {part}
+      </a>
+    ) : (
+      part
+    ),
+  );
+}
+
 interface Props {
   /** The chat is disabled until a shortlist exists. */
   hasShortlist: boolean;
@@ -36,9 +51,9 @@ export function ChatStrip({ hasShortlist, chat, seed }: Props) {
             Thinking…
           </p>
         ) : lastAssistant ? (
-          <p>
+          <p className="whitespace-pre-line">
             <span className="text-muted">Scout: </span>
-            {lastAssistant.text}
+            {linkify(lastAssistant.text)}
           </p>
         ) : null}
       </div>
@@ -53,7 +68,7 @@ export function ChatStrip({ hasShortlist, chat, seed }: Props) {
           disabled={!hasShortlist}
           onChange={(e) => setText(e.target.value)}
           autoComplete="off"
-          placeholder="Refine, e.g. only Rust, or nothing bigger than an evening"
+          placeholder="e.g. I want to find a Rust issue in a new repository that fits my skills"
           className="min-w-0 flex-1 rounded-md border border-line-strong bg-surface px-3 py-2 text-base text-fg disabled:cursor-not-allowed disabled:bg-inset"
         />
         <button

@@ -70,8 +70,11 @@ export function resolveIssue(state: IssueScoutState, ref: number | string): Rank
   return all.find((r) => r.issue.id === ref || r.issue.url === ref);
 }
 
-function listing(top: Ranked[]): string {
-  return top.map((r, i) => `${i + 1}. ${r.issue.org}/${r.issue.repo}#${r.issue.number} ${r.issue.title}`).join("\n");
+/** A numbered list for chat: position, repo, title, then the issue URL on the next line. */
+export function listing(top: Ranked[]): string {
+  return top
+    .map((r, i) => `${i + 1}. ${r.issue.org}/${r.issue.repo}#${r.issue.number} ${r.issue.title}\n   ${r.issue.url}`)
+    .join("\n");
 }
 
 // ---------------------------------------------------------------------------
@@ -138,7 +141,7 @@ export async function refine(deps: Deps, state: IssueScoutState, patch: RefinePa
   const text =
     top.length === 0
       ? "Nothing matches those filters. Try relaxing one, for example a different language."
-      : `Re-ranked: ${top.length} issue${top.length === 1 ? "" : "s"} match now. The cards above are updated.`;
+      : `Re-ranked: ${top.length} issue${top.length === 1 ? "" : "s"} match now, and the cards above are updated.\n${listing(top)}`;
   return {
     text,
     shortlist,

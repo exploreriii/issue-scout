@@ -86,7 +86,12 @@ export async function handleScout(
     orgs = r.orgs;
   }
 
-  const rl = await checkRateLimit(deps.cache, await ipKey(request.headers.get("cf-connecting-ip")), deps.now());
+  // The model call is the costly resource: only the explaining request counts against the per-IP limit,
+  // so the UI's two-step search (?explain=0 first, then explanations) costs one unit per search.
+  const explain = new URL(request.url).searchParams.get("explain") !== "0";
+  const rl = explain
+    ? await checkRateLimit(deps.cache, await ipKey(request.headers.get("cf-connecting-ip")), deps.now())
+    : { allowed: true, retryAfterSeconds: 0 };
   if (!rl.allowed) {
     return json(
       { error: `Rate limit of ${RATE_LIMIT_PER_HOUR} shortlists per hour reached. Try again later.` },
@@ -100,6 +105,9 @@ export async function handleScout(
       parsed.input,
       deps,
       orgs ? { excludeRepos: [], excludeIssues: [], orgs } : undefined,
+      undefined,
+      // ?explain=0 returns the ranked cards without the model call; the UI then asks again (warm cache) for the text.
+      { explain },
     );
     return json(
       {

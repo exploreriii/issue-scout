@@ -2,6 +2,8 @@ import { routeAgentRequest } from "agents";
 import type { Env } from "./env";
 import { handleHealth } from "./routes/health";
 import { getRegistry } from "./registry";
+import { warmSnapshots, type WarmResult } from "@issue-scout/sources";
+import { createDeps, recordRateLimit, type Deps } from "./flow";
 import { handleOrgs, handleScout } from "./routes/scout";
 
 export { IssueScoutAgent } from "./agent";
@@ -17,6 +19,14 @@ function withAgentAlias(request: Request, url: URL): Request {
   const aliased = new URL(url);
   aliased.pathname = `/agents/issue-scout-agent/${url.pathname.slice(from.length)}`;
   return new Request(aliased, request);
+}
+
+/** Cron Trigger body: refresh every enabled org's snapshot so user requests find a warm cache. */
+export async function warmAll(deps: Deps): Promise<WarmResult> {
+  const result = await warmSnapshots(deps.registry, { issues: deps.issues, cache: deps.cache, now: deps.now() });
+  await recordRateLimit(deps);
+  if (result.failed.length > 0) console.warn(`warm-up failed for: ${result.failed.join(", ")}`);
+  return result;
 }
 
 export default {
@@ -35,5 +45,10 @@ export default {
     }
 
     return env.ASSETS.fetch(request);
+  },
+
+  /** `deps` is an injection point for tests; production builds GitHub sources. */
+  async scheduled(_controller: ScheduledController, env: Env, ctx: ExecutionContext, deps?: Deps): Promise<void> {
+    ctx.waitUntil(warmAll(deps ?? createDeps(env)));
   },
 } satisfies ExportedHandler<Env>;

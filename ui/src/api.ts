@@ -54,6 +54,8 @@ export interface ScoutResponse {
   shortlist: ShortlistItem[];
   runnersUp: Ranked[];
   snapshot: { id: string; ageSeconds: number };
+  /** "pending" when the request asked for no explanations (?explain=0); a second call fills them in. */
+  explanations?: "ok" | "unavailable" | "pending";
   /** Candidates per org login before the org filter. */
   orgCounts?: Record<string, number>;
   /** The org filter that was applied, when one was. */
@@ -78,8 +80,12 @@ export async function getOrgs(): Promise<OrgInfo[]> {
   );
 }
 
-export async function postScout(input: ScoutInput, orgs?: string[]): Promise<ScoutResponse> {
-  const res = await fetch("/scout", {
+export async function postScout(
+  input: ScoutInput,
+  orgs?: string[],
+  opts: { explain?: boolean } = {},
+): Promise<ScoutResponse> {
+  const res = await fetch(opts.explain === false ? "/scout?explain=0" : "/scout", {
     method: "POST",
     headers: { "content-type": "application/json" },
     body: JSON.stringify(orgs && orgs.length > 0 ? { ...input, orgs } : input),

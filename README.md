@@ -9,7 +9,7 @@ A read-only good-first-issue matcher for Hiero and LF Decentralized Trust organi
 
 ## How to use
 
-1. Enter a GitHub handle, or choose "Describe yourself instead" and type something like "Python and a bit of Rust, two evenings a week". Press **Find issues**.
+1. Enter your GitHub handle and press **Find issues**.
 
    ![Landing page](docs/screenshots/01-landing-light.png)
 
@@ -51,6 +51,7 @@ pnpm exec wrangler secret put GITHUB_TOKEN
 pnpm --filter @issue-scout/ui build
 pnpm exec wrangler deploy
 ```
+A Cron Trigger (`*/30 * * * *`, set in `wrangler.jsonc`) refreshes every organisation's snapshot so searches usually hit a warm cache.
 
 ## Extend
 

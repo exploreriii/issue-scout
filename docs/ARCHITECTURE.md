@@ -79,6 +79,8 @@ Score is the sum of the applied rules. Each rule adds its reason string.
 | `rl:{ip}:{hour}` | request counter | 1 h |
 
 - Snapshot id (hash of org list and fetch time) is stored in the session, so refinements re-rank the same data.
+- A Cron Trigger (`*/30 * * * *`) runs `scheduled` -> `warmSnapshots`, refreshing every enabled org's snapshot through the same fetch-and-cache path, so user requests normally find a warm cache (a failing org keeps its old snapshot until the next run).
+- `POST /scout?explain=0` skips the explainer and answers `explanations: "pending"`; the UI renders those cards, then repeats the call without the flag (same snapshot, zero source fetches) to merge explanations by issue id.
 - KV TTLs are clamped to ≥60 s. The limiter's read-then-write is not atomic, so bursts may overshoot.
 
 ## 8. Scale path

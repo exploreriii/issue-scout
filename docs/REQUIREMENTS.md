@@ -3,7 +3,7 @@
 ## Functional
 | ID | Requirement | Verified by |
 |---|---|---|
-| FR-1 | Accept a GitHub handle matching `^[A-Za-z0-9-]{1,39}$` or free text ≤500 characters. Reject anything else with a 400 and a message. | unit |
+| FR-1 | Accept a GitHub handle matching `^[A-Za-z0-9-]{1,39}$` or free text ≤500 characters. Reject anything else with a 400 and a message. (The web form offers the handle only; free text stays available over the API.) | unit |
 | FR-2 | Build a profile: languages (primary language of public repos, weighted by repo count and recency), experience band from merged-PR count, optional time budget and preferences. | unit, fixture |
 | FR-3 | Fetch open issues for every enabled org: labels, assignees, comment count, created and updated dates, repo primary language and topics, last merged PR date. | contract test on recorded responses |
 | FR-4 | Candidate filter: open; no assignee; no label in the org's `claimed` set; a label in its `firstIssue` or `helpWanted` set; none in its `exclude` set (epic, discussion, tracking). | unit |
@@ -23,7 +23,7 @@
 ## Non-functional
 | ID | Requirement | Target | Verified by |
 |---|---|---|---|
-| NFR-1 | Latency | Shortlist ≤4 s p95 warm; refinement ≤1 s p95 | manual timing |
+| NFR-1 | Latency | Shortlist ≤4 s p95 warm; refinement ≤1 s p95. Cards render before explanations (`POST /scout?explain=0`, then a warm-cache call fills them in); a 30-minute Cron Trigger keeps snapshots warm. | manual timing |
 | NFR-2 | Cost | ≤1 Workers AI call per shortlist; inside the free tier at 200 shortlists a day | AI Gateway logs |
 | NFR-3 | Freshness | Issue snapshot TTL 1 h; profile 24 h; CONTRIBUTING 24 h | config |
 | NFR-4 | Rate limiting | 30 shortlists per IP per hour; 429 with `Retry-After` | unit |

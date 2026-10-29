@@ -83,7 +83,7 @@ export interface ScoutOutput {
   top: Ranked[];
   runnersUp: Ranked[];
   explanations: Explanation[];
-  explanationsStatus: "ok" | "unavailable";
+  explanationsStatus: "ok" | "unavailable" | "pending";
   snapshot: { id: string; ageSeconds: number };
   candidatesRef: string[];
   warnings: string[];
@@ -120,6 +120,7 @@ export async function runScout(
   deps: Deps,
   preferences?: Preferences,
   profiles: ProfileSource = deps.profiles,
+  opts: { explain?: boolean } = {},
 ): Promise<ScoutOutput> {
   const result = await scout(input, {
     issues: deps.issues,
@@ -140,7 +141,11 @@ export async function runScout(
     orgCounts = reranked.orgCounts;
     if (orgs) ({ top, runnersUp } = reranked);
   }
-  const ex = await explain(top, result.profile, { ai: deps.ai, model: deps.model });
+  // `explain: false` skips the model so the cards can render at once; a second call fills them in.
+  const ex: { explanations: Explanation[]; status: "ok" | "unavailable" | "pending" } =
+    opts.explain === false
+      ? { explanations: [], status: "pending" }
+      : await explain(top, result.profile, { ai: deps.ai, model: deps.model });
   await recordRateLimit(deps);
   return {
     profile: result.profile,

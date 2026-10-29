@@ -4,9 +4,11 @@ import { IssueCard } from "./IssueCard";
 interface Props {
   shortlist: ShortlistItem[];
   runnersUp: Ranked[];
+  /** Explanations are still on their way (the cards are already final). */
+  explaining?: boolean;
 }
 
-export function Shortlist({ shortlist, runnersUp }: Props) {
+export function Shortlist({ shortlist, runnersUp, explaining = false }: Props) {
   if (shortlist.length === 0) {
     return (
       <div className="rounded-lg border border-dashed border-line-strong p-8 text-center">
@@ -20,7 +22,7 @@ export function Shortlist({ shortlist, runnersUp }: Props) {
       <h2 id="shortlist-heading" className="font-serif text-2xl">
         Your shortlist
       </h2>
-      {!hasExplanations && (
+      {!hasExplanations && !explaining && (
         <p className="rounded-md border border-line bg-inset px-4 py-3 text-sm text-muted">
           Explanations are unavailable right now; the ranking is unaffected.
         </p>
@@ -28,7 +30,7 @@ export function Shortlist({ shortlist, runnersUp }: Props) {
       <ol className="space-y-4 list-none p-0">
         {shortlist.map((item) => (
           <li key={item.issue.id}>
-            <IssueCard item={item} />
+            <IssueCard item={item} explaining={explaining} />
           </li>
         ))}
       </ol>

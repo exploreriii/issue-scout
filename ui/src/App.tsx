@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { getOrgs, postScout, type OrgInfo, type ScoutInput, type ShortlistItem, type Ranked } from "./api";
 import { useScoutChat, type ShortlistMeta } from "./agent";
 import { HandleForm } from "./components/HandleForm";
 import { OrgFilter, orgCommand } from "./components/OrgFilter";
 import { Shortlist } from "./components/Shortlist";
 import { ChatStrip } from "./components/ChatStrip";
-import { Spinner } from "./components/Spinner";
+import { StatusLine, loadingMessages } from "./components/StatusLine";
 
 function Skeleton() {
   return (
@@ -25,7 +25,10 @@ export function App() {
   const [orgs, setOrgs] = useState<OrgInfo[]>([]);
   const [selected, setSelected] = useState<ReadonlySet<string>>(new Set());
   const [orgCounts, setOrgCounts] = useState<Record<string, number> | undefined>();
+  const [explaining, setExplaining] = useState(false);
   const lastInput = useRef<ScoutInput | null>(null);
+  /** Bumped per search, so a slow explanation call never lands on a newer shortlist. */
+  const runId = useRef(0);
 
   function onChatShortlist(s: ShortlistItem[], meta: ShortlistMeta) {
     setShortlist(s);
@@ -67,21 +70,49 @@ export function App() {
     }
   }
 
+  /** Second call, same snapshot (warm cache): fetch the explanations and merge them in by issue id. */
+  async function fillExplanations(id: number, input: ScoutInput, sel: ReadonlySet<string>) {
+    try {
+      const full = await postScout(input, orgsParam(sel));
+      if (id !== runId.current) return;
+      const byId = new Map(full.shortlist.flatMap((s) => (s.explanation ? [[s.issue.id, s.explanation] as const] : [])));
+      setShortlist((prev) =>
+        prev?.map((item) => {
+          const explanation = byId.get(item.issue.id);
+          return item.explanation || !explanation ? item : { ...item, explanation };
+        }) ?? prev,
+      );
+    } catch {
+      /* the cards are already final; the list shows its "explanations unavailable" note */
+    } finally {
+      if (id === runId.current) setExplaining(false);
+    }
+  }
+
   async function run(input: ScoutInput, sel: ReadonlySet<string> = selected) {
+    const id = ++runId.current;
     lastInput.current = input;
     setLoading(true);
     setError(null);
+    setExplaining(false);
     try {
-      const res = await postScout(input, orgsParam(sel));
+      const res = await postScout(input, orgsParam(sel), { explain: false });
+      if (id !== runId.current) return;
       setShortlist(res.shortlist);
       setRunnersUp(res.runnersUp);
       setOrgCounts(res.orgCounts);
+      if (res.explanations === "pending" && res.shortlist.length > 0) {
+        setExplaining(true);
+        void fillExplanations(id, input, sel);
+      }
     } catch (e) {
-      setError(e instanceof Error ? e.message : "Something went wrong.");
+      if (id === runId.current) setError(e instanceof Error ? e.message : "Something went wrong.");
     } finally {
-      setLoading(false);
+      if (id === runId.current) setLoading(false);
     }
   }
+
+  const statusMessages = useMemo(() => loadingMessages(selected.size || 3), [selected.size]);
 
   return (
     <div className="mx-auto flex min-h-screen max-w-4xl flex-col px-4">
@@ -107,10 +138,7 @@ export function App() {
         <div aria-live="polite" aria-busy={loading} className="space-y-6">
           {loading && (
             <>
-              <p role="status" className="flex items-center gap-2 text-sm text-muted">
-                <Spinner />
-                Finding issues…
-              </p>
+              <StatusLine messages={statusMessages} />
               <Skeleton />
             </>
           )}
@@ -129,7 +157,7 @@ export function App() {
               </button>
             </div>
           )}
-          {shortlist && !loading && <Shortlist shortlist={shortlist} runnersUp={runnersUp} />}
+          {shortlist && !loading && <Shortlist shortlist={shortlist} runnersUp={runnersUp} explaining={explaining} />}
         </div>
 
         <ChatStrip hasShortlist={!!shortlist && shortlist.length > 0} chat={chat} seed={lastInput.current} />

@@ -76,6 +76,7 @@ describe("IssueScoutAgent", () => {
     expect(reply.shortlist).toHaveLength(5);
     expect(reply.shortlist![0].explanation).toBeDefined();
     expect(reply.text).toContain("exploreriii");
+    for (const item of reply.shortlist!) expect(reply.text).toContain(item.issue.url);
 
     const st = await s.state();
     expect(st.profile?.handle).toBe("exploreriii");
@@ -338,6 +339,23 @@ describe("IssueScoutAgent", () => {
         const r = await s.send("do something odd");
         expect(r.text).toContain("did not understand");
       }
+    });
+
+    it("reads \"a Rust issue in a new repository that fits my skills\" without the model", async () => {
+      const s = await open();
+      const first = await s.send("exploreriii");
+      const shown = new Set(first.shortlist!.map((i) => `${i.issue.org}/${i.issue.repo}`));
+      const r = await s.send("I want to find a Rust issue in a new repository that is a good fit for my skills");
+      expect(s.t.ai.calls.filter((c) => c.kind === "interpret")).toHaveLength(0);
+      expect(r.shortlist!.length).toBeGreaterThan(0);
+      for (const item of r.shortlist!) {
+        expect(item.issue.repoLanguage).toBe("Rust");
+        expect(shown.has(`${item.issue.org}/${item.issue.repo}`)).toBe(false);
+        expect(r.text).toContain(item.issue.url);
+      }
+      const st = await s.state();
+      expect(st.preferences.languages).toEqual(["Rust"]);
+      expect([...shown].every((repo) => st.preferences.excludeRepos.includes(repo))).toBe(true);
     });
 
     it("does not call the model for a deterministic command", async () => {
