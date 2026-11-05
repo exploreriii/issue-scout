@@ -20,6 +20,6 @@
     "deploy": "pnpm --filter @issue-scout/ui --if-present build && wrangler deploy"
   },
   "devDependencies": {
-    "wrangler": "^4.155.0"
+    "wrangler": "^4.156.1"
   }
 }
